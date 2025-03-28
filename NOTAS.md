@@ -9,8 +9,6 @@
 
 `npm install @prisma/client`
 
-`npx prisma migrate dev --name init`
-
 
 ## Auth
 
@@ -30,3 +28,14 @@
 `npx shadcn@latest add avatar`
 
 `npx shadcn@latest add form`
+
+`npx shadcn@latest add scroll-area`
+
+`npx shadcn@latest add dialog`
+
+`npx shadcn@latest add alert-dialog`
+
+
+## Date
+
+`npm install date-fns`

@@ -9,8 +9,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Glicemia',
-  description: 'Testes diários de glicemia',
+  title: 'Glicemia App',
+  description: 'Registro diário de glicemia',
 };
 
 export default function RootLayout({
