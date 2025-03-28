@@ -6,7 +6,7 @@ interface Props {
   size?: number;
 }
 
-export default function Logo({ size = 40 }: Props) {
+export default function Logo({ size = 32 }: Props) {
   return (
     <Image
       src={glucometer}

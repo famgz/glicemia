@@ -20,9 +20,9 @@ export default async function LogsPage() {
       <div className="flex items-center justify-between">
         <div>
           <p>
-            Olá, <span className="font-medium">{user.name}</span>
+            Olá, <span className="font-medium">{user.name?.split(' ')[0]}</span>
           </p>
-          <p className="text-muted-foreground">{formatDate()}</p>
+          <p className="text-muted-foreground text-sm">{formatDate()}</p>
         </div>
         <UpsertGlucoseLogDialog>
           <Button className="gap-2 font-medium sm:text-lg">

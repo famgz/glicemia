@@ -62,14 +62,20 @@ export default async function Menu() {
             <DropdownMenuSeparator />
 
             <DropdownMenuItem asChild>
-              <Link href={'/user'} className="flex w-full items-center gap-2">
+              <Link
+                href={'/profile'}
+                className="flex w-full items-center gap-2"
+              >
                 <UserIcon className="size-4" />
                 Perfil
               </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem asChild>
-              <Link href={'/user'} className="flex w-full items-center gap-2">
+              <Link
+                href={'/profile'}
+                className="flex w-full items-center gap-2"
+              >
                 <BookMarkedIcon className="size-4" />
                 Relatórios
               </Link>
@@ -84,11 +90,13 @@ export default async function Menu() {
           <div className="flex w-full items-center justify-between gap-3 p-3">
             <span>Olá, faça seu login</span>
 
-            <Button variant={'default'} className="h-8 px-3" asChild>
-              <Link href={'/login'}>
-                <LogInIcon size={18} />
-              </Link>
-            </Button>
+            <DropdownMenuItem asChild>
+              <Button variant={'default'} className="h-8 px-3" asChild>
+                <Link href={'/login'}>
+                  <LogInIcon size={18} />
+                </Link>
+              </Button>
+            </DropdownMenuItem>
           </div>
         )}
       </DropdownMenuContent>

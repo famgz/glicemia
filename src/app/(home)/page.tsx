@@ -22,7 +22,7 @@ export default async function Home() {
             <p>
               Seja bem-vindo(a) ao{' '}
               <span className="text-primary font-bold">Glicemia App</span>, sua
-              plataforma para registrar suas medições de glicemia
+              plataforma para registrar medições de glicemia.
             </p>
             <p>
               Registre com precisão suas medições diárias, e compartilhe os

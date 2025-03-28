@@ -54,11 +54,6 @@ export function UpsertGlucoseLogForm({ callbackFn = () => {} }: Props) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      value: undefined,
-      mealType: undefined,
-      notes: '',
-    },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {

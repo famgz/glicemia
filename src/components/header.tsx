@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { ModeToggleButton } from '@/components/buttons/mode-toggle-button';
+import Logo from '@/components/icons/logo';
 import LogoFull from '@/components/icons/logo-full';
 import Menu from '@/components/menu';
 import { Button } from '@/components/ui/button';
@@ -12,9 +13,14 @@ export default async function Header() {
       <Card className="rounded-t-none max-sm:py-3">
         <CardContent className="container flex items-center justify-between py-1">
           <div className="flex items-center">
-            <Button variant={'ghost'} asChild>
+            <Button variant={'ghost'} asChild className="p-0 px-2">
               <Link href={'/'} className="flex-center">
-                <LogoFull />
+                <div className="desktop-only">
+                  <LogoFull />
+                </div>
+                <div className="mobile-only">
+                  <Logo />
+                </div>
               </Link>
             </Button>
             <Button variant={'ghost'} asChild>
