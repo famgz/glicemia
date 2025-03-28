@@ -39,7 +39,9 @@ export default function DeleteGlucoseLogButton({ glucoseLog }: Props) {
             Esta ação é irreversível.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <GlucoseLogValue glucoseLog={glucoseLog} />
+        <div className="flex w-full justify-center">
+          <GlucoseLogValue glucoseLog={glucoseLog} />
+        </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
           <AlertDialogAction>Continuar</AlertDialogAction>

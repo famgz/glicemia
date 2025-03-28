@@ -13,7 +13,7 @@ export default function GlucoseLogValue({ glucoseLog }: Props) {
 
   return (
     <span
-      className={cn('text-primary text-2xl font-semibold', {
+      className={cn('text-primary w-fit text-3xl font-semibold', {
         'text-destructive': isAboveMax,
       })}
     >

@@ -60,9 +60,11 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
               <GlucoseLogMealTypeBadge glucoseLog={glucoseLog} />
             </div>
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription asChild>
             <div className="flex flex-col gap-3">
-              <GlucoseLogValue glucoseLog={glucoseLog} />
+              <div className="flex w-full justify-center">
+                <GlucoseLogValue glucoseLog={glucoseLog} />
+              </div>
               <div>
                 <p className="text-foreground">Comentários</p>
                 <p>
