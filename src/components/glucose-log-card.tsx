@@ -1,6 +1,7 @@
 'use client';
 
 import { GlucoseLog } from '@prisma/client';
+import { AlignLeftIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import DeleteGlucoseLogButton from '@/components/delete-glucose-log-button';
@@ -33,7 +34,7 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Card onClick={() => setOpen(true)}>
+      <Card onClick={() => setOpen(true)} className="gap-3">
         <CardHeader>
           <CardTitle>
             <div className="flex items-center justify-between">
@@ -48,8 +49,11 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
           </CardTitle>
           <CardDescription></CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex items-center justify-between">
           <GlucoseLogValue glucoseLog={glucoseLog} />
+          {glucoseLog.notes && (
+            <AlignLeftIcon className="text-muted-foreground" />
+          )}
         </CardContent>
       </Card>
       <DialogContent>

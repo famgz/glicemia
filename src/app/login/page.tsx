@@ -1,13 +1,13 @@
 import LoginButton from '@/components/buttons/login';
 
 interface Props {
-  searchParams: {
+  searchParams: Promise<{
     redirect?: string;
-  };
+  }>;
 }
 
 export default async function LoginPage({ searchParams }: Props) {
-  const { redirect } = searchParams;
+  const redirect = (await searchParams)?.redirect;
 
   return (
     <div className="bg-muted flex-center container flex-1">
