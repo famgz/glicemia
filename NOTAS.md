@@ -35,6 +35,14 @@
 
 `npx shadcn@latest add alert-dialog`
 
+`npx shadcn@latest add input`
+
+`npx shadcn@latest add select`
+
+`npx shadcn@latest add textarea`
+
+`npx shadcn@latest add sonner`
+
 
 ## Date
 

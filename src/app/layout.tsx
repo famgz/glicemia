@@ -2,6 +2,7 @@ import './globals.css';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Toaster } from 'sonner';
 
 import Header from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -23,7 +24,7 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
@@ -32,6 +33,7 @@ export default function RootLayout({
             <main className="expanded">{children}</main>
           </div>
         </ThemeProvider>
+        <Toaster position="top-center" duration={2000} />
       </body>
     </html>
   );

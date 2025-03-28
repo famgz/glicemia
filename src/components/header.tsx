@@ -9,12 +9,17 @@ import { Card, CardContent } from '@/components/ui/card';
 export default async function Header() {
   return (
     <header>
-      <Card className="rounded-t-none">
+      <Card className="rounded-t-none max-sm:py-3">
         <CardContent className="container flex items-center justify-between py-1">
           <div className="flex items-center">
             <Button variant={'ghost'} asChild>
               <Link href={'/'} className="flex-center">
                 <LogoFull />
+              </Link>
+            </Button>
+            <Button variant={'ghost'} asChild>
+              <Link href={'/logs'} className="flex-center">
+                Medições
               </Link>
             </Button>
           </div>
