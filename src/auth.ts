@@ -1,9 +1,10 @@
-import { db } from '@/lib/prisma';
-import { SessionUser } from '@/types/auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import { Adapter } from 'next-auth/adapters';
 import Google from 'next-auth/providers/google';
+
+import { db } from '@/lib/prisma';
+import { SessionUser } from '@/types/auth';
 
 const options: NextAuthConfig = {
   adapter: PrismaAdapter(db) as Adapter,

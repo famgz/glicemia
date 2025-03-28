@@ -19,3 +19,12 @@
 `npx auth secret`
 
 `npm install @auth/prisma-adapter`
+
+
+## Shadcn
+
+`npx shadcn@latest add card`
+
+`npx shadcn@latest add dropdown-menu`
+
+`npx shadcn@latest add avatar`

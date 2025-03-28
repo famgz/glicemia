@@ -1,8 +1,9 @@
 'use server';
 
+import { redirect } from 'next/navigation';
+
 import { auth, signIn, signOut } from '@/auth';
 import { SessionUser } from '@/types/auth';
-import { redirect } from 'next/navigation';
 
 export async function login(formData: FormData) {
   const redirectTo = formData.get('redirect');
