@@ -10,7 +10,7 @@ export default async function LoginPage({ searchParams }: Props) {
   const { redirect } = searchParams;
 
   return (
-    <div className="flex-center bg-muted flex-1">
+    <div className="bg-muted flex-center container flex-1">
       <div className="bg-background max-w-xl flex-1 rounded-lg">
         <div className="space-y-8 p-8 text-center shadow-lg">
           <div className="space-y-4">

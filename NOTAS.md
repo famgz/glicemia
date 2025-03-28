@@ -28,3 +28,5 @@
 `npx shadcn@latest add dropdown-menu`
 
 `npx shadcn@latest add avatar`
+
+`npx shadcn@latest add form`
