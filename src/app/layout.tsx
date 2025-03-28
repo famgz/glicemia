@@ -8,8 +8,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'My Project',
-  description: 'A NextJs project',
+  title: 'Glicemia',
+  description: 'Testes diários de glicemia',
 };
 
 export default function RootLayout({
