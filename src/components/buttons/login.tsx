@@ -3,14 +3,19 @@
 import { login } from '@/actions/auth';
 import GoogleIcon from '@/components/icons/google';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Props {
   redirect?: string;
+  className?: string;
 }
 
-export default async function LoginButton({ redirect }: Props) {
+export default async function LoginButton({ redirect, className }: Props) {
   return (
-    <form action={login} className="flex items-center justify-between">
+    <form
+      action={login}
+      className={cn('flex items-center justify-between', className)}
+    >
       <input type="hidden" name="redirect" value={redirect || ''} />
       <input type="hidden" name="login-provider" value="google" />
       <Button
