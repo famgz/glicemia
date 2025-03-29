@@ -10,10 +10,10 @@ export default function GlucoseLogDate({ glucoseLog }: Props) {
   return (
     <div className="text-muted-foreground flex flex-col text-start">
       <span className="text-lg font-bold">
-        {getHourMinute(glucoseLog.time)}
+        {getHourMinute(glucoseLog.date)}
       </span>
       <span className="text-xs font-semibold opacity-60">
-        {getDate(glucoseLog.time)}
+        {getDate(glucoseLog.date)}
       </span>
     </div>
   );

@@ -76,7 +76,7 @@ enum MealType {
 
 model GlucoseLog {
   id       String   @id @default(uuid())
-  time     DateTime @default(now())
+  date     DateTime @default(now())
   value    Int
   mealType MealType
   notes    String?

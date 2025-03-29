@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { upsertGlucoseLog } from '@/actions/glucose';
+import DateTimePicker24h from '@/components/date-time-picker';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -36,6 +37,9 @@ const formSchema = z.object({
     .refine((x) => Number(x) < 1000, { message: 'Máximo de 999' }),
   mealType: z.string().min(1, 'Campo obrigatório'),
   notes: z.string().max(500, 'Máximo de 500 caracteres'),
+  date: z.date({
+    required_error: 'Campo obrigatório',
+  }),
 });
 
 interface Props {
@@ -54,16 +58,18 @@ export function UpsertGlucoseLogForm({
       value: glucoseLog?.value?.toString() || '',
       mealType: glucoseLog?.mealType || '',
       notes: glucoseLog?.notes || '',
+      date: glucoseLog?.date || new Date(),
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
-      const { value, mealType, notes } = values;
+      const { value, mealType, date, notes } = values;
       const res = await upsertGlucoseLog(
         glucoseLog?.id,
         Number(value),
         mealType as MealType,
+        date,
         notes
       );
       if (res) {
@@ -120,6 +126,26 @@ export function UpsertGlucoseLogForm({
                       ))}
                     </SelectContent>
                   </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Data e Hora</FormLabel>
+                <FormControl>
+                  <DateTimePicker24h
+                    date={field.value}
+                    onSelect={(date) => {
+                      if (date) {
+                        field.onChange(date);
+                      }
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

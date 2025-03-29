@@ -51,6 +51,7 @@ export async function upsertGlucoseLog(
   id: string | undefined,
   value: number,
   mealType: MealType,
+  date: Date,
   notes: string
 ) {
   const isEdit = !!id;
@@ -62,12 +63,14 @@ export async function upsertGlucoseLog(
       update: {
         value,
         mealType,
+        date,
         notes,
       },
       create: {
         userId,
         value,
         mealType,
+        date,
         notes,
       },
     });

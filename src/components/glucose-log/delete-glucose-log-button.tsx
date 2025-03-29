@@ -68,7 +68,7 @@ export default function DeleteGlucoseLogButton({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
           <Button type="submit" disabled={isPending} onClick={handleDelete}>
-            {isPending ? 'Deletando...' : 'Deletar'}
+            {isPending ? 'Removendo...' : 'Remover'}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

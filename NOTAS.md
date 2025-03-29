@@ -43,6 +43,10 @@
 
 `npx shadcn@latest add sonner`
 
+`npx shadcn@latest add calendar`
+
+`npx shadcn@latest add popover`
+
 
 ## Date
 
