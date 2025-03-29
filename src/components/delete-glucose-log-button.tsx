@@ -2,12 +2,15 @@
 
 import { GlucoseLog } from '@prisma/client';
 import { Trash2Icon } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
+import { toast } from 'sonner';
 
+import { deleteGlucoseLog } from '@/actions/glucose';
+import GlucoseLogDate from '@/components/glucose-log-date';
+import GlucoseLogMealTypeBadge from '@/components/glucose-log-meal-type-badge';
 import GlucoseLogValue from '@/components/glucose-log-value';
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -20,10 +23,28 @@ import { Button } from '@/components/ui/button';
 
 interface Props {
   glucoseLog: GlucoseLog;
+  callbackFn?: () => void;
 }
 
-export default function DeleteGlucoseLogButton({ glucoseLog }: Props) {
+export default function DeleteGlucoseLogButton({
+  glucoseLog,
+  callbackFn = () => {},
+}: Props) {
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  async function handleDelete() {
+    startTransition(async () => {
+      const res = await deleteGlucoseLog(glucoseLog.id);
+      if (res) {
+        setOpen(false);
+        callbackFn();
+        toast.success('Medição removida com sucesso!');
+      } else {
+        toast.error('Erro ao remover medição');
+      }
+    });
+  }
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -39,12 +60,21 @@ export default function DeleteGlucoseLogButton({ glucoseLog }: Props) {
             Esta ação é irreversível.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="flex w-full justify-center">
+        <div className="flex w-full justify-between py-5">
+          <GlucoseLogDate glucoseLog={glucoseLog} />
           <GlucoseLogValue glucoseLog={glucoseLog} />
+          <GlucoseLogMealTypeBadge glucoseLog={glucoseLog} />
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction>Continuar</AlertDialogAction>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending}
+            onClick={handleDelete}
+          >
+            {isPending ? 'Deletando...' : 'Deletar'}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
