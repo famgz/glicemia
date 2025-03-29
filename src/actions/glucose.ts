@@ -23,7 +23,7 @@ export async function getGlucoseLogs() {
         userId,
       },
       orderBy: {
-        createdAt: 'desc',
+        date: 'desc',
       },
     });
     return res;
