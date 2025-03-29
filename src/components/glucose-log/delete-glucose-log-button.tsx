@@ -37,8 +37,7 @@ export default function DeleteGlucoseLogButton({
     startTransition(async () => {
       const res = await deleteGlucoseLog(glucoseLog.id);
       if (res) {
-        setOpen(false);
-        callbackFn();
+        setTimeout(callbackFn, 300);
         toast.success('Medição removida com sucesso!');
       } else {
         toast.error('Erro ao remover medição');

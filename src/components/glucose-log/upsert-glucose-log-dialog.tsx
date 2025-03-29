@@ -35,8 +35,8 @@ export default function UpsertGlucoseLogDialog({
           </AlertDialogTitle>
         </AlertDialogHeader>
         <UpsertGlucoseLogForm
-          callbackFn={() => setOpen(false)}
           glucoseLog={glucoseLog}
+          callbackFn={() => setOpen(false)}
         />
         <AlertDialogFooter>
           <AlertDialogCancel className="w-full">Cancelar</AlertDialogCancel>

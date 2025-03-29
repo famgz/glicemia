@@ -2,6 +2,7 @@ import { GlucoseLog } from '@prisma/client';
 import { subDays } from 'date-fns';
 
 import GlucoseLogCard from '@/components/glucose-log/glucose-log-card';
+import GlucoseLogDetailsDialog from '@/components/glucose-log/glucose-log-details-dialog';
 import { groupGlucoseLogsByDay } from '@/utils/glucose-log';
 import { getDate } from '@/utils/time';
 
@@ -25,9 +26,13 @@ export default function GlucoseLogs({ glucoseLogs }: Props) {
           <h2 className="font-bold">
             {(day === today && 'Hoje') || (day === yesterday && 'Ontem') || day}
           </h2>
-          {logs.map((log) => (
-            <GlucoseLogCard glucoseLog={log} key={log.id} />
-          ))}
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {logs.map((log) => (
+              <GlucoseLogDetailsDialog key={log.id} glucoseLog={log}>
+                <GlucoseLogCard glucoseLog={log} />
+              </GlucoseLogDetailsDialog>
+            ))}
+          </div>
         </div>
       ))}
     </div>

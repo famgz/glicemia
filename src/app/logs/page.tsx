@@ -1,11 +1,9 @@
-import { PlusIcon } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
 import { getSessionUserElseRedirectToLogin } from '@/actions/auth';
 import { getGlucoseLogs } from '@/actions/glucose';
+import CreateGlucoseLogButton from '@/components/glucose-log/create-glucose-log-button';
 import GlucoseLogs from '@/components/glucose-log/glucose-logs';
-import UpsertGlucoseLogDialog from '@/components/glucose-log/upsert-glucose-log-dialog';
-import { Button } from '@/components/ui/button';
 import { formatDate } from '@/utils/time';
 
 export default async function LogsPage() {
@@ -23,12 +21,7 @@ export default async function LogsPage() {
           </p>
           <p className="text-muted-foreground text-sm">{formatDate()}</p>
         </div>
-        <UpsertGlucoseLogDialog>
-          <Button className="gap-2 font-medium sm:text-lg">
-            <PlusIcon strokeWidth={3} />
-            <span>Nova medição</span>
-          </Button>
-        </UpsertGlucoseLogDialog>
+        <CreateGlucoseLogButton />
       </div>
       <div className="space-y-2">
         <h1 className="text-xl font-semibold">Medições</h1>

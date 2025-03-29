@@ -73,7 +73,7 @@ export function UpsertGlucoseLogForm({
         notes
       );
       if (res) {
-        callbackFn();
+        setTimeout(callbackFn, 300);
         toast.success('Medição registrada com sucesso!');
       } else {
         toast.error('Erro ao registrar medição');

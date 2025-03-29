@@ -13,8 +13,8 @@ export default function GlucoseLogValue({ glucoseLog }: Props) {
 
   return (
     <div
-      className={cn('text-primary relative w-fit', {
-        'text-destructive': isAboveMax,
+      className={cn('text-primary/80 relative w-fit', {
+        'text-destructive/70': isAboveMax,
       })}
     >
       <span className="text-5xl font-bold">{glucoseLog.value}</span>
