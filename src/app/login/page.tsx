@@ -15,7 +15,7 @@ export default async function LoginPage({ searchParams }: Props) {
         <div className="space-y-8 p-8 text-center shadow-lg">
           <div className="space-y-4">
             <h1 className="text-2xl font-semibold">
-              Bem-vindo ao Glicemia App
+              Bem-vindo ao Diário de Glicemia
             </h1>
             <div className="space-y-2 text-gray-500">
               <p>Faça login na plataforma</p>

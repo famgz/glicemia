@@ -5,8 +5,8 @@ export default function LogoFull() {
     <div className="flex gap-2">
       <Logo size={32} />
       <div className="flex flex-col font-semibold opacity-70">
+        <span className="leading-none">Diário de</span>
         <span className="leading-none">Glicemia</span>
-        <span className="leading-none">App</span>
       </div>
     </div>
   );

@@ -21,8 +21,8 @@ export default async function Home() {
           <div className="text-muted-foreground space-y-3 font-light md:text-xl">
             <p>
               Seja bem-vindo(a) ao{' '}
-              <span className="text-primary font-bold">Glicemia App</span>, sua
-              plataforma para registrar medições de glicemia.
+              <span className="text-primary font-bold">Diário de Glicemia</span>
+              , sua plataforma para registrar medições de glicemia.
             </p>
             <p>
               Registre com precisão suas medições diárias, e compartilhe os
