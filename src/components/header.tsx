@@ -9,7 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 export default async function Header() {
   return (
     <header>
-      <Card className="rounded-t-none max-sm:py-3">
+      <Card className="rounded-t-none py-3">
         <CardContent className="container flex items-center justify-between py-1">
           <div className="flex items-center sm:gap-3">
             <Button variant={'ghost'} asChild className="p-0 px-2">
@@ -28,7 +28,6 @@ export default async function Header() {
               </Link>
             </Button>
           </div>
-
           <div className="flex-center gap-2.5">
             <Menu />
           </div>

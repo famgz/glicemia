@@ -4,11 +4,11 @@ import { GlucoseLog } from '@prisma/client';
 import { AlignLeftIcon } from 'lucide-react';
 import { useState } from 'react';
 
-import DeleteGlucoseLogButton from '@/components/delete-glucose-log-button';
-import EditGlucoseLogButton from '@/components/edit-glucose-log-button';
-import GlucoseLogDate from '@/components/glucose-log-date';
-import GlucoseLogMealTypeBadge from '@/components/glucose-log-meal-type-badge';
-import GlucoseLogValue from '@/components/glucose-log-value';
+import DeleteGlucoseLogButton from '@/components/glucose-log/delete-glucose-log-button';
+import EditGlucoseLogButton from '@/components/glucose-log/edit-glucose-log-button';
+import GlucoseLogDate from '@/components/glucose-log/glucose-log-date';
+import GlucoseLogMealTypeBadge from '@/components/glucose-log/glucose-log-meal-type-badge';
+import GlucoseLogValue from '@/components/glucose-log/glucose-log-value';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
@@ -38,7 +38,7 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
             </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-between px-4">
+        <CardContent className="flex items-end justify-between px-4">
           <GlucoseLogValue glucoseLog={glucoseLog} />
           {glucoseLog.notes && (
             <AlignLeftIcon className="text-muted-foreground" />

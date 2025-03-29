@@ -3,9 +3,9 @@ import { notFound } from 'next/navigation';
 
 import { getSessionUserElseRedirectToLogin } from '@/actions/auth';
 import { getGlucoseLogs } from '@/actions/glucose';
-import GlucoseLogs from '@/components/glucose-logs';
+import GlucoseLogs from '@/components/glucose-log/glucose-logs';
+import UpsertGlucoseLogDialog from '@/components/glucose-log/upsert-glucose-log-dialog';
 import { Button } from '@/components/ui/button';
-import UpsertGlucoseLogDialog from '@/components/upsert-glucose-log-dialog';
 import { formatDate } from '@/utils/time';
 
 export default async function LogsPage() {

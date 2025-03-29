@@ -3,6 +3,7 @@
 import { GlucoseLog } from '@prisma/client';
 import { ReactNode, useState } from 'react';
 
+import { UpsertGlucoseLogForm } from '@/components/glucose-log/upsert-glucose-log-form';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -13,7 +14,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { UpsertGlucoseLogForm } from '@/components/upsert-glucose-log-form';
 
 interface Props {
   glucoseLog?: GlucoseLog;
@@ -41,7 +41,7 @@ export default function UpsertGlucoseLogDialog({
           glucoseLog={glucoseLog}
         />
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogCancel className="w-full">Cancelar</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

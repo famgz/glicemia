@@ -1,6 +1,6 @@
 import { GlucoseLog } from '@prisma/client';
 
-import GlucoseLogCard from '@/components/glucose-log-card';
+import GlucoseLogCard from '@/components/glucose-log/glucose-log-card';
 
 interface Props {
   glucoseLogs: GlucoseLog[];

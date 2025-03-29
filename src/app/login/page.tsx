@@ -23,7 +23,7 @@ export default async function LoginPage({ searchParams }: Props) {
             Bem-vindo ao Diário de Glicemia
           </CardTitle>
           <CardDescription className="space-y-2 text-lg text-gray-500">
-            <p>Faça login na plataforma</p>
+            <p>Para acessar as funcionalidades, faça login na plataforma</p>
           </CardDescription>
         </CardHeader>
         <CardFooter>
