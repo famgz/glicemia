@@ -35,7 +35,7 @@ const formSchema = z.object({
     .refine((x) => !isNaN(Number(x)), { message: 'Deve ser um número' })
     .refine((x) => Number(x) < 1000, { message: 'Máximo de 999' }),
   mealType: z.string().min(1, 'Campo obrigatório'),
-  notes: z.string().max(500, 'Máximo de 00 caracteres'),
+  notes: z.string().max(500, 'Máximo de 500 caracteres'),
 });
 
 interface Props {

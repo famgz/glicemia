@@ -28,7 +28,7 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <Card
         onClick={() => setOpen(true)}
-        className="hover:bg-muted-foreground/5 cursor-pointer gap-3 py-4"
+        className="hover:bg-muted-foreground/5 max-w-lg cursor-pointer gap-3 py-4"
       >
         <CardHeader className="px-4">
           <CardTitle>

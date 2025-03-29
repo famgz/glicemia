@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 
 export default async function Home() {
   return (
-    <div className="flex-center container flex-col py-6 md:py-10">
+    <div className="flex-center expanded container flex-col py-6 md:py-10">
       <div className="grid gap-6 md:grid-cols-2">
         {/* gretings */}
         <div className="space-y-12">
@@ -45,8 +45,8 @@ export default async function Home() {
         <div className="flex-center max-md:order-first">
           <Image
             src={heroImage}
-            width={500}
-            height={500}
+            width={350}
+            height={350}
             priority
             className="max-md:size-[300px]"
             alt="Aparelho medidor de glicemia ao lado de um dedo"
