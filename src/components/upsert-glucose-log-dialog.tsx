@@ -25,7 +25,6 @@ export default function UpsertGlucoseLogDialog({
   children,
 }: Props) {
   const [open, setOpen] = useState(false);
-  const isEdit = !!glucoseLog;
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -33,13 +32,16 @@ export default function UpsertGlucoseLogDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {isEdit ? 'Editar' : 'Criar'} medição de glicemia
+            {glucoseLog ? 'Editar' : 'Criar'} medição de glicemia
           </AlertDialogTitle>
           <AlertDialogDescription></AlertDialogDescription>
         </AlertDialogHeader>
-        <UpsertGlucoseLogForm callbackFn={() => setOpen(false)} />
+        <UpsertGlucoseLogForm
+          callbackFn={() => setOpen(false)}
+          glucoseLog={glucoseLog}
+        />
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -9,7 +9,7 @@ interface Props {
 export default function GlucoseLogMealTypeBadge({ glucoseLog }: Props) {
   const glucoseLogMapItem = glucoseLogMap[glucoseLog.mealType];
   return (
-    <div className="bg-primary/20 text-primary w-fit rounded-full px-2 py-1 text-xs">
+    <div className="bg-primary/20 text-primary h-fit w-fit flex-none rounded-full px-2 py-1 text-xs whitespace-nowrap">
       {glucoseLogMapItem.label}
     </div>
   );

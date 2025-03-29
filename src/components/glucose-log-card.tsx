@@ -6,24 +6,16 @@ import { useState } from 'react';
 
 import DeleteGlucoseLogButton from '@/components/delete-glucose-log-button';
 import EditGlucoseLogButton from '@/components/edit-glucose-log-button';
+import GlucoseLogDate from '@/components/glucose-log-date';
 import GlucoseLogMealTypeBadge from '@/components/glucose-log-meal-type-badge';
 import GlucoseLogValue from '@/components/glucose-log-value';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { getDate, getFullDate, getHourMinute } from '@/utils/time';
 
 interface Props {
   glucoseLog: GlucoseLog;
@@ -34,22 +26,19 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Card onClick={() => setOpen(true)} className="gap-3">
-        <CardHeader>
+      <Card
+        onClick={() => setOpen(true)}
+        className="hover:bg-muted-foreground/5 cursor-pointer gap-3 py-4"
+      >
+        <CardHeader className="px-4">
           <CardTitle>
-            <div className="flex items-center justify-between">
-              <div className="text-muted-foreground flex items-center gap-2">
-                <span className="text-xl">
-                  {getHourMinute(glucoseLog.time)}
-                </span>
-                <span className="opacity-70">{getDate(glucoseLog.time)}</span>
-              </div>
+            <div className="flex items-start justify-between">
+              <GlucoseLogDate glucoseLog={glucoseLog} />
               <GlucoseLogMealTypeBadge glucoseLog={glucoseLog} />
             </div>
           </CardTitle>
-          <CardDescription></CardDescription>
         </CardHeader>
-        <CardContent className="flex items-center justify-between">
+        <CardContent className="flex items-center justify-between px-4">
           <GlucoseLogValue glucoseLog={glucoseLog} />
           {glucoseLog.notes && (
             <AlignLeftIcon className="text-muted-foreground" />
@@ -57,30 +46,26 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
         </CardContent>
       </Card>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>
-            <div className="flex items-center justify-between gap-10 pr-6">
-              {getFullDate(glucoseLog.time)}
-              <GlucoseLogMealTypeBadge glucoseLog={glucoseLog} />
-            </div>
-          </DialogTitle>
-          <DialogDescription asChild>
-            <div className="flex flex-col gap-3">
-              <div className="flex w-full justify-center">
-                <GlucoseLogValue glucoseLog={glucoseLog} />
-              </div>
-              <div>
-                <p className="text-foreground">Comentários</p>
-                <p>
-                  {glucoseLog.notes || 'Nenhum comentário para este registro'}
-                </p>
-              </div>
-            </div>
-          </DialogDescription>
-        </DialogHeader>
+        <DialogTitle className="sr-only">Are you absolutely sure?</DialogTitle>
+        <div className="flex flex-col gap-3">
+          <div className="flex w-full justify-between py-5">
+            <GlucoseLogDate glucoseLog={glucoseLog} />
+            <GlucoseLogValue glucoseLog={glucoseLog} />
+            <GlucoseLogMealTypeBadge glucoseLog={glucoseLog} />
+          </div>
+          <div>
+            <p className="text-foreground">Notas</p>
+            <p className="text-muted-foreground">
+              {glucoseLog.notes || 'Nenhuma nota para este registro'}
+            </p>
+          </div>
+        </div>
         <DialogFooter className="flex-row justify-end gap-2">
           <EditGlucoseLogButton glucoseLog={glucoseLog} />
-          <DeleteGlucoseLogButton glucoseLog={glucoseLog} />
+          <DeleteGlucoseLogButton
+            glucoseLog={glucoseLog}
+            callbackFn={() => setOpen(false)}
+          />
         </DialogFooter>
       </DialogContent>
     </Dialog>

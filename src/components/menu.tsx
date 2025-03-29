@@ -9,6 +9,7 @@ import Link from 'next/link';
 
 import { auth } from '@/auth';
 import LogoutButton from '@/components/buttons/logout';
+import { ModeToggleButton } from '@/components/buttons/mode-toggle-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,7 +34,10 @@ export default async function Menu() {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="min-w-48 p-2 text-sm" align={'end'}>
-        <DropdownMenuLabel>Menu</DropdownMenuLabel>
+        <DropdownMenuLabel className="flex items-center justify-between">
+          <span>Menu</span>
+          <ModeToggleButton />
+        </DropdownMenuLabel>
 
         {user ? (
           <>
@@ -62,20 +66,14 @@ export default async function Menu() {
             <DropdownMenuSeparator />
 
             <DropdownMenuItem asChild>
-              <Link
-                href={'/profile'}
-                className="flex w-full items-center gap-2"
-              >
+              <Link href={'/logs'} className="flex w-full items-center gap-2">
                 <UserIcon className="size-4" />
                 Perfil
               </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem asChild>
-              <Link
-                href={'/profile'}
-                className="flex w-full items-center gap-2"
-              >
+              <Link href={'/logs'} className="flex w-full items-center gap-2">
                 <BookMarkedIcon className="size-4" />
                 Relatórios
               </Link>

@@ -1,6 +1,5 @@
 import Link from 'next/link';
 
-import { ModeToggleButton } from '@/components/buttons/mode-toggle-button';
 import Logo from '@/components/icons/logo';
 import LogoFull from '@/components/icons/logo-full';
 import Menu from '@/components/menu';
@@ -31,7 +30,6 @@ export default async function Header() {
           </div>
 
           <div className="flex-center gap-2.5">
-            <ModeToggleButton />
             <Menu />
           </div>
         </CardContent>

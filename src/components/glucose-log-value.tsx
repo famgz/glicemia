@@ -12,12 +12,15 @@ export default function GlucoseLogValue({ glucoseLog }: Props) {
   const isAboveMax = glucoseLog.value > glucoseLogMapItem.maxValue;
 
   return (
-    <span
-      className={cn('text-primary w-fit text-3xl font-semibold', {
+    <div
+      className={cn('text-primary relative w-fit', {
         'text-destructive': isAboveMax,
       })}
     >
-      {glucoseLog.value}
-    </span>
+      <span className="text-4xl font-bold">{glucoseLog.value}</span>
+      <span className="absolute right-0 bottom-1 translate-x-[100%] text-[10px]">
+        mg/dL
+      </span>
+    </div>
   );
 }

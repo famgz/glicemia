@@ -1,5 +1,9 @@
 import { MealType } from '@prisma/client';
 
+const MAX_VALUE_FASTING = 95;
+const MAX_VALUE_PRE_MEAL = 100;
+const MAX_VALUE_POST_MEAL = 140;
+
 export type GlucoseLogMapItem = {
   label: string;
   maxValue: number;
@@ -12,42 +16,42 @@ export type GlucoseLogMap = {
 export const glucoseLogMap: GlucoseLogMap = {
   FASTING: {
     label: 'Em jejum',
-    maxValue: 92,
+    maxValue: MAX_VALUE_FASTING,
   },
   AFTER_BREAKFAST: {
     label: 'Pós café',
-    maxValue: 140,
+    maxValue: MAX_VALUE_POST_MEAL,
   },
   AFTER_AM_SNACK: {
     label: 'Pós lanche matinal',
-    maxValue: 140,
+    maxValue: MAX_VALUE_PRE_MEAL,
   },
   AFTER_LUNCH: {
     label: 'Pós almoço',
-    maxValue: 140,
+    maxValue: MAX_VALUE_POST_MEAL,
   },
   AFTER_PM_SNACK: {
     label: 'Pós lanche da tarde',
-    maxValue: 140,
+    maxValue: MAX_VALUE_PRE_MEAL,
   },
   AFTER_DINNER: {
     label: 'Pós jantar',
-    maxValue: 140,
+    maxValue: MAX_VALUE_POST_MEAL,
   },
   AFTER_NIGHT_SNACK: {
     label: 'Pós ceia',
-    maxValue: 140,
+    maxValue: MAX_VALUE_PRE_MEAL,
   },
   BEDTIME: {
     label: 'Antes de dormir',
-    maxValue: 140,
+    maxValue: MAX_VALUE_PRE_MEAL,
   },
   POST_EXERCISE: {
     label: 'Pós exercício',
-    maxValue: 140,
+    maxValue: MAX_VALUE_PRE_MEAL,
   },
   OTHER: {
     label: 'Outro',
-    maxValue: 140,
+    maxValue: MAX_VALUE_POST_MEAL,
   },
 } as const;
