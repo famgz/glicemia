@@ -8,7 +8,6 @@ import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -34,7 +33,6 @@ export default function UpsertGlucoseLogDialog({
           <AlertDialogTitle>
             {glucoseLog ? 'Editar' : 'Criar'} medição de glicemia
           </AlertDialogTitle>
-          <AlertDialogDescription></AlertDialogDescription>
         </AlertDialogHeader>
         <UpsertGlucoseLogForm
           callbackFn={() => setOpen(false)}

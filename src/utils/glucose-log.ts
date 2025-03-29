@@ -7,6 +7,5 @@ export function groupGlucoseLogsByDay(glucoseLogs: GlucoseLog[]) {
   const res = Object.groupBy(glucoseLogs, (x) =>
     getDate(x.date)
   ) as GlucoseLogByDay;
-  console.log(res);
   return res;
 }

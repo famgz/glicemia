@@ -44,7 +44,7 @@ export default function DateTimePicker24h({ date, onSelect }: Props) {
   }
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
+    <Popover open={isOpen} onOpenChange={setIsOpen} modal={true}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
