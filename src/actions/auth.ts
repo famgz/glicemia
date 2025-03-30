@@ -1,13 +1,29 @@
 'use server';
 
 import { redirect } from 'next/navigation';
+import slugify from 'slugify';
 
 import { auth, signIn, signOut } from '@/auth';
+import { db } from '@/lib/prisma';
 import { SessionUser } from '@/types/auth';
+
+export async function generateSlugFromUsername(username: string) {
+  const baseSlug = slugify(username, { lower: true, trim: true })
+    .replace(/[^a-zA-Z0-9-]/g, '')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+  let slug = baseSlug;
+  let counter = 1;
+  while (await db.user.findUnique({ where: { slug } })) {
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+  return slug;
+}
 
 export async function login(formData: FormData) {
   const redirectTo = formData.get('redirect');
-  const opts = { redirectTo: (redirectTo || '/user') as string };
+  const opts = { redirectTo: (redirectTo || '/logs') as string };
   await signIn('google', opts);
 }
 

@@ -17,7 +17,10 @@ export default async function LogsPage() {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-lg">
-            Olá, <span className="font-medium">{user.name?.split(' ')[0]}</span>
+            Olá,{' '}
+            <span className="font-medium capitalize">
+              {user.name?.split(' ')[0]}
+            </span>
           </p>
           <p className="text-muted-foreground text-sm">{formatDate()}</p>
         </div>

@@ -51,3 +51,8 @@
 ## Date
 
 `npm install date-fns`
+
+
+## Slug
+
+`npm i slugify`
