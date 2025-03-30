@@ -8,10 +8,11 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
@@ -44,8 +45,8 @@ export default function DateTimePicker24h({ date, onSelect }: Props) {
   }
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen} modal={true}>
-      <PopoverTrigger asChild>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={true}>
+      <DialogTrigger asChild>
         <Button
           variant="outline"
           className={cn(
@@ -60,8 +61,9 @@ export default function DateTimePicker24h({ date, onSelect }: Props) {
             <span>Selecione data e hora</span>
           )}
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      </DialogTrigger>
+      <DialogContent className="w-auto p-0" showCloseButton={false}>
+        <DialogTitle className="sr-only">Calendário</DialogTitle>
         <div className="sm:flex">
           <Calendar
             mode="single"
@@ -114,7 +116,7 @@ export default function DateTimePicker24h({ date, onSelect }: Props) {
             </ScrollArea>
           </div>
         </div>
-      </PopoverContent>
-    </Popover>
+      </DialogContent>
+    </Dialog>
   );
 }
