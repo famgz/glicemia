@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 
 export default async function Home() {
   return (
-    <div className="flex-center expanded container flex-col py-6 md:py-10">
+    <div className="flex-center expanded container flex-col">
       <div className="grid gap-6 md:grid-cols-2">
         {/* gretings */}
         <div className="space-y-12">

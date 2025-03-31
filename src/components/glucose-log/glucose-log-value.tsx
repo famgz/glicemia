@@ -5,9 +5,10 @@ import { cn } from '@/lib/utils';
 
 interface Props {
   glucoseLog: GlucoseLog;
+  className?: string;
 }
 
-export default function GlucoseLogValue({ glucoseLog }: Props) {
+export default function GlucoseLogValue({ glucoseLog, className }: Props) {
   const glucoseLogMapItem = glucoseLogMap[glucoseLog.mealType];
   const isAboveMax = glucoseLog.value > glucoseLogMapItem.maxValue;
 
@@ -17,7 +18,9 @@ export default function GlucoseLogValue({ glucoseLog }: Props) {
         'text-destructive/70': isAboveMax,
       })}
     >
-      <span className="text-5xl font-bold">{glucoseLog.value}</span>
+      <span className={cn('text-5xl font-bold', className)}>
+        {glucoseLog.value}
+      </span>
       <span className="absolute right-0 bottom-1 translate-x-[100%] text-[10px]">
         mg/dL
       </span>

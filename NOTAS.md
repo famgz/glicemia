@@ -47,6 +47,8 @@
 
 `npx shadcn@latest add popover`
 
+`npx shadcn@latest add table`
+
 
 ## Date
 

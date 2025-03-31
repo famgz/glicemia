@@ -4,16 +4,16 @@ import { subDays } from 'date-fns';
 import GlucoseLogCard from '@/components/glucose-log/glucose-log-card';
 import GlucoseLogDetailsDialog from '@/components/glucose-log/glucose-log-details-dialog';
 import { groupGlucoseLogsByDay } from '@/utils/glucose-log';
-import { getDate } from '@/utils/time';
+import { getShortDate } from '@/utils/time';
 
 interface Props {
   glucoseLogs: GlucoseLog[];
 }
 
-export default function GlucoseLogs({ glucoseLogs }: Props) {
+export default function GlucoseLogCards({ glucoseLogs }: Props) {
   const glucoseLogsByDay = groupGlucoseLogsByDay(glucoseLogs || []);
-  const today = getDate(new Date());
-  const yesterday = getDate(subDays(new Date(), 1));
+  const today = getShortDate(new Date());
+  const yesterday = getShortDate(subDays(new Date(), 1));
 
   if (glucoseLogs.length === 0) {
     return <p className="text-muted-foreground">Nenhuma medição encontrada</p>;

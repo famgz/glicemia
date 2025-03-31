@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { getSessionUserElseRedirectToLogin } from '@/actions/auth';
 import { getGlucoseLogs } from '@/actions/glucose';
 import CreateGlucoseLogButton from '@/components/glucose-log/create-glucose-log-button';
-import GlucoseLogs from '@/components/glucose-log/glucose-logs';
+import GlucoseLogCards from '@/components/glucose-log/glucose-log-cards';
 import { formatDate } from '@/utils/time';
 
 export default async function LogsPage() {
@@ -13,7 +13,7 @@ export default async function LogsPage() {
   if (!glucoseLogs) return notFound();
 
   return (
-    <div className="expanded container gap-8 py-6 md:py-10">
+    <div className="expanded container gap-8">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-lg">
@@ -28,7 +28,7 @@ export default async function LogsPage() {
       </div>
       <div className="space-y-2">
         <h1 className="text-xl font-semibold">Medições</h1>
-        <GlucoseLogs glucoseLogs={glucoseLogs} />
+        <GlucoseLogCards glucoseLogs={glucoseLogs} />
       </div>
     </div>
   );

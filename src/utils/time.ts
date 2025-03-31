@@ -13,6 +13,10 @@ export function getDate(date: Date) {
   return format(date, 'dd/MM/yyyy', { locale: ptBR });
 }
 
+export function getShortDate(date: Date) {
+  return format(date, 'dd/MM/yy', { locale: ptBR });
+}
+
 export function getHourMinute(date: Date) {
   return format(date, 'HH:mm', { locale: ptBR });
 }

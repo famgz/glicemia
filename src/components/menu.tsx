@@ -1,8 +1,10 @@
 import {
   BookMarkedIcon,
+  DropletsIcon,
   HomeIcon,
   LogInIcon,
   MenuIcon,
+  SettingsIcon,
   UserIcon,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -66,9 +68,19 @@ export default async function Menu() {
             <DropdownMenuSeparator />
 
             <DropdownMenuItem asChild>
-              <Link href={'/logs'} className="flex w-full items-center gap-2">
+              <Link
+                href={`/user/${user.slug}`}
+                className="flex w-full items-center gap-2"
+              >
                 <UserIcon className="size-4" />
-                Perfil
+                Perfil público
+              </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild>
+              <Link href={'/logs'} className="flex w-full items-center gap-2">
+                <DropletsIcon className="size-4" />
+                Medições
               </Link>
             </DropdownMenuItem>
 
@@ -76,6 +88,16 @@ export default async function Menu() {
               <Link href={'/logs'} className="flex w-full items-center gap-2">
                 <BookMarkedIcon className="size-4" />
                 Relatórios
+              </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild>
+              <Link
+                href={'/profile'}
+                className="flex w-full items-center gap-2"
+              >
+                <SettingsIcon className="size-4" />
+                Configurações
               </Link>
             </DropdownMenuItem>
 
