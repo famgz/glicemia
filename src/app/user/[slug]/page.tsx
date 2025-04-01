@@ -1,5 +1,8 @@
+'use server';
+
 import { notFound } from 'next/navigation';
 
+import { getGlucoseLogs } from '@/actions/glucose';
 import GlucoseLogTable from '@/components/glucose-log/glucose-log-table';
 import { db } from '@/lib/prisma';
 
@@ -15,9 +18,11 @@ export default async function UserPage({ params }: Props) {
     return notFound();
   }
 
-  const glucoseLogs = await db.glucoseLog.findMany({
-    where: { userId: user.id },
-  });
+  const glucoseLogs = await getGlucoseLogs();
+
+  if (!glucoseLogs) {
+    return notFound();
+  }
 
   return (
     <div className="container">
