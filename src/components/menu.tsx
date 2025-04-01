@@ -1,11 +1,11 @@
 import {
   BookMarkedIcon,
   DropletsIcon,
+  GlobeIcon,
   HomeIcon,
   LogInIcon,
   MenuIcon,
   SettingsIcon,
-  UserIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -72,7 +72,7 @@ export default async function Menu() {
                 href={`/user/${user.slug}`}
                 className="flex w-full items-center gap-2"
               >
-                <UserIcon className="size-4" />
+                <GlobeIcon className="size-4" />
                 Perfil público
               </Link>
             </DropdownMenuItem>

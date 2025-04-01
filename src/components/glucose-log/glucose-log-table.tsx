@@ -2,16 +2,11 @@
 
 import { GlucoseLog } from '@prisma/client';
 import { subDays } from 'date-fns';
-import { AlignLeftIcon } from 'lucide-react';
 import { cookies } from 'next/headers';
 
 import GlucoseLogMealTypeBadge from '@/components/glucose-log/glucose-log-meal-type-badge';
+import { GlucoseLogNotesPopover } from '@/components/glucose-log/glucose-log-notes-popover';
 import GlucoseLogValue from '@/components/glucose-log/glucose-log-value';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import {
   Table,
   TableBody,
@@ -50,7 +45,7 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-24 text-center">Hora</TableHead>
+                <TableHead className="w-15 text-center">Hora</TableHead>
                 <TableHead className="w-32 text-center">Tipo</TableHead>
                 <TableHead className="text-center">Notas</TableHead>
                 <TableHead className="w-24 text-center">Valor</TableHead>
@@ -65,26 +60,11 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
                   <TableCell align="center">
                     <GlucoseLogMealTypeBadge glucoseLog={log} />
                   </TableCell>
-                  <TableCell align="center" className="max-w-[200px]">
-                    <div className="flex-center text-muted-foreground">
-                      {log.notes ? (
-                        <>
-                          <Popover>
-                            <PopoverTrigger>
-                              <AlignLeftIcon className="mobile-only size-4" />
-                            </PopoverTrigger>
-                            <PopoverContent className="text-muted-foreground text-sm break-words">
-                              {log.notes}
-                            </PopoverContent>
-                          </Popover>
-                          <p className="desktop-only truncate text-xs">
-                            {log.notes}
-                          </p>
-                        </>
-                      ) : (
-                        <span className="desktop-only">-</span>
-                      )}
-                    </div>
+                  <TableCell
+                    align="center"
+                    className="text-muted-foreground max-w-15"
+                  >
+                    <GlucoseLogNotesPopover notes={log.notes} />
                   </TableCell>
                   <TableCell align="right">
                     <div className="pr-8">
