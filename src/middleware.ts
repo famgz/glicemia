@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { auth } from '@/auth';
+import { COOKIES_TIMEZONE_STRING, DEFAULT_TIMEZONE } from '@/constants/time';
 
 const protectedRoutes = ['/logs', '/profile'];
 
@@ -14,8 +15,10 @@ function isRouteProtected(pathname: string) {
 export default auth((req) => {
   const pathname = req.nextUrl.pathname;
   const user = req.auth?.user;
+  const timeZone =
+    req.cookies.get(COOKIES_TIMEZONE_STRING)?.value || DEFAULT_TIMEZONE;
 
-  console.log('[middleware]', { pathname, auth: req.auth });
+  console.log('[middleware]', { pathname, auth: req.auth, timeZone });
 
   // redirect if already logged in
   if (user && pathname.startsWith('/login')) {
@@ -29,7 +32,9 @@ export default auth((req) => {
     return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  // response.headers.set(HEADERS_TIMEZONE_STRING, timeZone);
+  return response;
 });
 
 export const config = {

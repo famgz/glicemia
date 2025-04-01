@@ -1,22 +1,23 @@
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { formatInTimeZone } from 'date-fns-tz';
 
-export function formatDate(date: Date = new Date()): string {
-  return format(date, "d 'de' MMMM, yyyy", { locale: ptBR });
-}
+const dateFormatOptionsMap = {
+  'full-date-hour-minute': 'dd/MM/yyyy HH:mm',
+  'long-date': "d 'de' MMMM, yyyy",
+  'full-date': 'dd/MM/yyyy',
+  'short-date': 'dd/MM/yy',
+  'hour-minute': 'HH:mm',
+};
 
-export function getFullDate(date: Date) {
-  return format(date, 'dd/MM/yyyy HH:mm', { locale: ptBR });
-}
+type DateFormatOption = keyof typeof dateFormatOptionsMap;
 
-export function getDate(date: Date) {
-  return format(date, 'dd/MM/yyyy', { locale: ptBR });
-}
-
-export function getShortDate(date: Date) {
-  return format(date, 'dd/MM/yy', { locale: ptBR });
-}
-
-export function getHourMinute(date: Date) {
-  return format(date, 'HH:mm', { locale: ptBR });
+export function formatDate(
+  date: Date,
+  formatOption: DateFormatOption,
+  timeZone?: string | undefined
+) {
+  const formatString = dateFormatOptionsMap[formatOption];
+  return timeZone
+    ? formatInTimeZone(date, timeZone, formatString)
+    : format(date, formatString);
 }

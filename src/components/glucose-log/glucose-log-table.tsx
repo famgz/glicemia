@@ -1,6 +1,9 @@
+'use server';
+
 import { GlucoseLog } from '@prisma/client';
 import { subDays } from 'date-fns';
 import { AlignLeftIcon } from 'lucide-react';
+import { cookies } from 'next/headers';
 
 import GlucoseLogMealTypeBadge from '@/components/glucose-log/glucose-log-meal-type-badge';
 import GlucoseLogValue from '@/components/glucose-log/glucose-log-value';
@@ -12,17 +15,19 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { COOKIES_TIMEZONE_STRING } from '@/constants/time';
 import { groupGlucoseLogsByDay } from '@/utils/glucose-log';
-import { getHourMinute, getShortDate } from '@/utils/time';
+import { formatDate } from '@/utils/time';
 
 interface Props {
   glucoseLogs: GlucoseLog[];
 }
 
-export default function GlucoseLogTable({ glucoseLogs }: Props) {
-  const glucoseLogsByDay = groupGlucoseLogsByDay(glucoseLogs || []);
-  const today = getShortDate(new Date());
-  const yesterday = getShortDate(subDays(new Date(), 1));
+export default async function GlucoseLogTable({ glucoseLogs }: Props) {
+  const timeZone = (await cookies()).get(COOKIES_TIMEZONE_STRING)?.value;
+  const glucoseLogsByDay = groupGlucoseLogsByDay(glucoseLogs || [], timeZone);
+  const today = formatDate(new Date(), 'short-date', timeZone);
+  const yesterday = formatDate(subDays(new Date(), 1), 'short-date', timeZone);
 
   if (glucoseLogs.length === 0) {
     return (
@@ -56,15 +61,17 @@ export default function GlucoseLogTable({ glucoseLogs }: Props) {
                   </TableCell>
                 )}
                 <TableCell align="center" className="text-sm">
-                  {getHourMinute(log.date)}
+                  {formatDate(log.date, 'hour-minute', timeZone)}
                 </TableCell>
                 <TableCell align="center">
                   <GlucoseLogMealTypeBadge glucoseLog={log} />
                 </TableCell>
                 <TableCell align="center">
-                  <AlignLeftIcon className="text-muted-foreground mobile-only size-4" />
+                  {log.notes && (
+                    <AlignLeftIcon className="text-muted-foreground mobile-only size-4" />
+                  )}
                   <p className="desktop-only text-muted-foreground max-w-[200px] truncate text-xs">
-                    {log.notes}
+                    {log.notes || '-'}
                   </p>
                 </TableCell>
                 <TableCell align="right">

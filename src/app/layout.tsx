@@ -6,6 +6,7 @@ import { Toaster } from 'sonner';
 
 import Header from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
+import { TimezoneDetector } from '@/components/timezone-detector';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
           defaultTheme="light"
           disableTransitionOnChange
         >
+          <TimezoneDetector />
           <div className="flex h-screen flex-col">
             <Header />
             <main className="expanded">{children}</main>

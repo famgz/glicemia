@@ -1,19 +1,24 @@
+'use server';
+
 import { GlucoseLog } from '@prisma/client';
 import { subDays } from 'date-fns';
+import { cookies } from 'next/headers';
 
 import GlucoseLogCard from '@/components/glucose-log/glucose-log-card';
 import GlucoseLogDetailsDialog from '@/components/glucose-log/glucose-log-details-dialog';
+import { COOKIES_TIMEZONE_STRING } from '@/constants/time';
 import { groupGlucoseLogsByDay } from '@/utils/glucose-log';
-import { getShortDate } from '@/utils/time';
+import { formatDate } from '@/utils/time';
 
 interface Props {
   glucoseLogs: GlucoseLog[];
 }
 
-export default function GlucoseLogCards({ glucoseLogs }: Props) {
-  const glucoseLogsByDay = groupGlucoseLogsByDay(glucoseLogs || []);
-  const today = getShortDate(new Date());
-  const yesterday = getShortDate(subDays(new Date(), 1));
+export default async function GlucoseLogCards({ glucoseLogs }: Props) {
+  const timeZone = (await cookies()).get(COOKIES_TIMEZONE_STRING)?.value;
+  const glucoseLogsByDay = groupGlucoseLogsByDay(glucoseLogs || [], timeZone);
+  const today = formatDate(new Date(), 'short-date', timeZone);
+  const yesterday = formatDate(subDays(new Date(), 1), 'short-date', timeZone);
 
   if (glucoseLogs.length === 0) {
     return <p className="text-muted-foreground">Nenhuma medição encontrada</p>;
