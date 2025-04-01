@@ -35,10 +35,12 @@ export default function GlucoseLogDetailsDialog({
           Detalhes da medição de glicemia
         </DialogTitle>
         <div className="flex flex-col gap-3">
-          <div className="flex w-full justify-between py-5">
+          <div className="flex w-full items-center justify-between">
             <GlucoseLogDate glucoseLog={glucoseLog} />
-            <GlucoseLogValue glucoseLog={glucoseLog} />
             <GlucoseLogMealTypeBadge glucoseLog={glucoseLog} />
+          </div>
+          <div className="flex w-full justify-center">
+            <GlucoseLogValue glucoseLog={glucoseLog} />
           </div>
           <div>
             <p className="text-foreground">Notas</p>
