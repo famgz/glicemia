@@ -9,6 +9,7 @@ import { Calendar } from '@/components/ui/calendar';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
@@ -62,13 +63,14 @@ export default function DateTimePicker24h({ date, onSelect }: Props) {
           )}
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-auto p-0" showCloseButton={false}>
+      <DialogContent className="w-auto gap-2 p-0" showCloseButton={false}>
         <DialogTitle className="sr-only">Calendário</DialogTitle>
         <div className="sm:flex">
           <Calendar
             mode="single"
             selected={date}
             onSelect={handleDateSelect}
+            disabled={(date) => date > new Date()}
             locale={ptBR}
             classNames={{
               caption_label: 'capitalize text-base',
@@ -116,6 +118,11 @@ export default function DateTimePicker24h({ date, onSelect }: Props) {
             </ScrollArea>
           </div>
         </div>
+        <DialogFooter className="p-3">
+          <Button onClick={() => setIsOpen(false)} className="w-full">
+            Salvar
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
