@@ -1,6 +1,5 @@
 'use client';
 
-import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -15,6 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { formatDate } from '@/utils/time';
 
 const hours = Array.from({ length: 24 }, (_, i) => i);
 
@@ -56,7 +56,7 @@ export default function DateTimePicker24h({ date, onSelect }: Props) {
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? (
-            format(date, 'dd/MM/yyyy hh:mm', { locale: ptBR })
+            formatDate(date, 'full-date-hour-minute')
           ) : (
             <span>Selecione data e hora</span>
           )}

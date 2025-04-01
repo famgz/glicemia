@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { formatInTimeZone } from 'date-fns-tz';
 
 const dateFormatOptionsMap = {
@@ -18,6 +19,6 @@ export function formatDate(
 ) {
   const formatString = dateFormatOptionsMap[formatOption];
   return timeZone
-    ? formatInTimeZone(date, timeZone, formatString)
-    : format(date, formatString);
+    ? formatInTimeZone(date, timeZone, formatString, { locale: ptBR })
+    : format(date, formatString, { locale: ptBR });
 }
