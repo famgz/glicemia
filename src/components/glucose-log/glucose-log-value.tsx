@@ -1,7 +1,7 @@
 import { GlucoseLog } from '@prisma/client';
 
-import { glucoseLogMap } from '@/constants/glucose-log';
 import { cn } from '@/lib/utils';
+import { isGlucoseLogAboveMax } from '@/utils/glucose-log';
 
 interface Props {
   glucoseLog: GlucoseLog;
@@ -9,8 +9,7 @@ interface Props {
 }
 
 export default function GlucoseLogValue({ glucoseLog, className }: Props) {
-  const glucoseLogMapItem = glucoseLogMap[glucoseLog.mealType];
-  const isAboveMax = glucoseLog.value > glucoseLogMapItem.maxValue;
+  const isAboveMax = isGlucoseLogAboveMax(glucoseLog);
 
   return (
     <div

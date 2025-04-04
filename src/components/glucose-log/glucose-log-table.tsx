@@ -16,7 +16,11 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { COOKIES_TIMEZONE_STRING } from '@/constants/time';
-import { groupGlucoseLogsByDay } from '@/utils/glucose-log';
+import { cn } from '@/lib/utils';
+import {
+  groupGlucoseLogsByDay,
+  isGlucoseLogAboveMax,
+} from '@/utils/glucose-log';
 import { formatDate } from '@/utils/time';
 
 interface Props {
@@ -36,10 +40,10 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
   }
 
   return (
-    <div className="mt-5 space-y-4">
+    <div className="mt-5 space-y-5">
       {Object.entries(glucoseLogsByDay).map(([day, logs]) => (
         <div key={day}>
-          <p className="text-background from-muted-foreground/50 to-muted-foreground/0 w-full rounded-sm bg-linear-to-r px-3 py-0.5 text-sm font-semibold">
+          <p className="text-background from-muted-foreground/50 to-muted-foreground/0 w-full rounded-sm bg-linear-to-r px-3 py-1 text-sm font-semibold">
             {(day === today && 'Hoje') || (day === yesterday && 'Ontem') || day}
           </p>
           <Table>
@@ -54,27 +58,39 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {logs.map((log) => (
-                <TableRow key={log.id}>
-                  <TableCell align="center" className="text-sm">
-                    {formatDate(log.date, 'hour-minute', timeZone)}
-                  </TableCell>
-                  <TableCell align="center">
-                    <GlucoseLogMealTypeBadge glucoseLog={log} />
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    className="text-muted-foreground max-w-15"
+              {logs.map((log) => {
+                const isAboveMax = isGlucoseLogAboveMax(log);
+                return (
+                  <TableRow
+                    key={log.id}
+                    className={cn({
+                      'from-destructive/3 via-destructive/5 to-destructive/3 bg-linear-to-r':
+                        isAboveMax,
+                    })}
                   >
-                    <GlucoseLogNotesPopover notes={log.notes} />
-                  </TableCell>
-                  <TableCell align="center">
-                    <div className="pr-8">
-                      <GlucoseLogValue glucoseLog={log} className="text-base" />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
+                    <TableCell align="center" className="text-sm">
+                      {formatDate(log.date, 'hour-minute', timeZone)}
+                    </TableCell>
+                    <TableCell align="center">
+                      <GlucoseLogMealTypeBadge glucoseLog={log} />
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      className="text-muted-foreground max-w-15"
+                    >
+                      <GlucoseLogNotesPopover notes={log.notes} />
+                    </TableCell>
+                    <TableCell align="center">
+                      <div className="pr-8">
+                        <GlucoseLogValue
+                          glucoseLog={log}
+                          className="text-base"
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>

@@ -1,5 +1,6 @@
 import { GlucoseLog } from '@prisma/client';
 
+import { glucoseLogMap } from '@/constants/glucose-log';
 import { GlucoseLogByDay } from '@/types/glucose-log';
 import { formatDate } from '@/utils/time';
 
@@ -14,4 +15,9 @@ export function groupGlucoseLogsByDay(
     logs.sort((a, b) => a.date.getTime() - b.date.getTime())
   );
   return glucoseLogsSortedByDay;
+}
+
+export function isGlucoseLogAboveMax(glucoseLog: GlucoseLog) {
+  const glucoseLogMapItem = glucoseLogMap[glucoseLog.mealType];
+  return glucoseLog.value > glucoseLogMapItem.maxValue;
 }
