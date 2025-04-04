@@ -2,9 +2,8 @@
 
 import { notFound } from 'next/navigation';
 
-import { getGlucoseLogs } from '@/actions/glucose';
+import { getUserBySlugWithGlucoseLogs } from '@/actions/user';
 import GlucoseLogTable from '@/components/glucose-log/glucose-log-table';
-import { db } from '@/lib/prisma';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -12,13 +11,8 @@ interface Props {
 
 export default async function UserPage({ params }: Props) {
   const slug = (await params).slug;
-  const user = await db.user.findUnique({ where: { slug } });
-
-  if (!user) {
-    return notFound();
-  }
-
-  const glucoseLogs = await getGlucoseLogs();
+  const user = await getUserBySlugWithGlucoseLogs(slug);
+  const glucoseLogs = user?.glucoseLogs;
 
   if (!glucoseLogs) {
     return notFound();

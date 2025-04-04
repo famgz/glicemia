@@ -45,10 +45,12 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-15 text-center">Hora</TableHead>
+                <TableHead className="w-15 text-center sm:w-30">Hora</TableHead>
                 <TableHead className="w-32 text-center">Tipo</TableHead>
                 <TableHead className="text-center">Notas</TableHead>
-                <TableHead className="w-24 text-center">Valor</TableHead>
+                <TableHead className="w-24 text-center sm:w-30">
+                  Valor
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -66,7 +68,7 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
                   >
                     <GlucoseLogNotesPopover notes={log.notes} />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="center">
                     <div className="pr-8">
                       <GlucoseLogValue glucoseLog={log} className="text-base" />
                     </div>
