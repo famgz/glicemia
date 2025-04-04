@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import { formatDate } from '@/utils/time';
 
 const hours = Array.from({ length: 24 }, (_, i) => i);
+const minutes = Array.from({ length: 12 }, (_, i) => i * 5);
 
 interface Props {
   date?: Date;
@@ -80,7 +81,7 @@ export default function DateTimePicker24h({ date, onSelect }: Props) {
           <div className="flex flex-col divide-y sm:h-[300px] sm:flex-row sm:divide-x sm:divide-y-0">
             <ScrollArea className="w-64 sm:w-auto">
               <div className="flex p-2 sm:flex-col">
-                {hours.reverse().map((hour) => (
+                {hours.map((hour) => (
                   <Button
                     key={hour}
                     size="icon"
@@ -98,7 +99,7 @@ export default function DateTimePicker24h({ date, onSelect }: Props) {
             </ScrollArea>
             <ScrollArea className="w-64 sm:w-auto">
               <div className="flex p-2 sm:flex-col">
-                {Array.from({ length: 12 }, (_, i) => i * 5).map((minute) => (
+                {minutes.map((minute) => (
                   <Button
                     key={minute}
                     size="icon"
