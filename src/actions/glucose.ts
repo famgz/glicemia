@@ -1,9 +1,13 @@
 'use server';
 
 import { MealType } from '@prisma/client';
+import { endOfDay, startOfDay } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 
 import { getSessionUserIdElseThrow } from '@/actions/auth';
+import { COOKIES_TIMEZONE_STRING } from '@/constants/time';
 import { db } from '@/lib/prisma';
 
 async function checkOwnershipElseThrow(id: string | undefined) {
@@ -43,6 +47,58 @@ export async function getGlucoseLogById(id: string) {
     return res;
   } catch (e) {
     console.error('Failed to get glucose log by id', e);
+    return null;
+  }
+}
+
+export async function getGlucoseLogsByDateRange(
+  dateStart: Date,
+  dateEnd: Date
+) {
+  try {
+    const userId = await getSessionUserIdElseThrow();
+    const res = await db.glucoseLog.findMany({
+      where: {
+        userId,
+        date: {
+          gte: dateStart,
+          lte: dateEnd,
+        },
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+    return res;
+  } catch (e) {
+    console.error('Failed to get glucose logs by date range', e);
+    return null;
+  }
+}
+
+export async function getGlucoseLogsByLocalDay(date: Date) {
+  try {
+    const userTimezone = (await cookies()).get(COOKIES_TIMEZONE_STRING)?.value;
+    if (!userTimezone) {
+      throw new Error("Cookies didn't provide timezone");
+    }
+    if (isNaN(date.getTime())) {
+      throw new Error('Invalid date input');
+    }
+    const zonedDate = toZonedTime(date, userTimezone);
+    const dateStart = startOfDay(zonedDate);
+    const dateEnd = endOfDay(zonedDate);
+    new Date().getTimezoneOffset();
+    console.log({
+      date,
+      zonedDate,
+      dateStart,
+      dateEnd,
+    });
+    const res = getGlucoseLogsByDateRange(dateStart, dateEnd);
+    return res;
+  } catch (e) {
+    console.error('Failed to get glucose logs by local day', e);
     return null;
   }
 }

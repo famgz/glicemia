@@ -64,7 +64,7 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
                   <TableRow
                     key={log.id}
                     className={cn({
-                      'from-destructive/3 via-destructive/5 to-destructive/3 bg-linear-to-r':
+                      'from-destructive/5 via-destructive/0 to-destructive/0 bg-linear-to-l':
                         isAboveMax,
                     })}
                   >

@@ -2,12 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { GlucoseLog, MealType } from '@prisma/client';
-import { useTransition } from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { upsertGlucoseLog } from '@/actions/glucose';
+import { getGlucoseLogsByLocalDay, upsertGlucoseLog } from '@/actions/glucose';
 import DateTimePicker24h from '@/components/date-time-picker';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { glucoseLogMap } from '@/constants/glucose-log';
+import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
   value: z
@@ -52,6 +53,9 @@ export function UpsertGlucoseLogForm({
   callbackFn = () => {},
 }: Props) {
   const [isPending, startTransition] = useTransition();
+  const [markedMealTypesByDay, setMarkedMealTypesByDay] = useState<string[]>(
+    []
+  );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,6 +85,32 @@ export function UpsertGlucoseLogForm({
     });
   }
 
+  const updateAvailableDayMealTypes = useCallback((date: Date | undefined) => {
+    if (!date) {
+      return;
+    }
+    startTransition(async () => {
+      const res = await getGlucoseLogsByLocalDay(date);
+      if (!res) {
+        return;
+      }
+      const mealTypesByDay = Array.from(new Set(res.map((x) => x.mealType)));
+      setMarkedMealTypesByDay(mealTypesByDay);
+    });
+  }, []);
+
+  function handleDateChange(date: Date | undefined) {
+    if (!date) {
+      return;
+    }
+    updateAvailableDayMealTypes(date);
+    form.setValue('mealType', '');
+  }
+
+  useEffect(() => {
+    updateAvailableDayMealTypes(glucoseLog?.date || new Date());
+  }, [glucoseLog?.date, updateAvailableDayMealTypes]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -93,9 +123,10 @@ export function UpsertGlucoseLogForm({
                 <FormLabel>Valor</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Digite o valor da medição"
                     {...field}
                     type="number"
+                    className="!text-sm placeholder:!text-sm md:!text-sm"
+                    placeholder="Digite o valor da medição"
                   />
                 </FormControl>
                 <FormMessage />
@@ -111,7 +142,8 @@ export function UpsertGlucoseLogForm({
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value}
+                    disabled={isPending}
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
@@ -119,11 +151,20 @@ export function UpsertGlucoseLogForm({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Object.entries(glucoseLogMap).map(([key, value]) => (
-                        <SelectItem value={key} key={key}>
-                          {value.label}
-                        </SelectItem>
-                      ))}
+                      {Object.entries(glucoseLogMap).map(([key, value]) => {
+                        const isUnavailable =
+                          markedMealTypesByDay.includes(key);
+                        return (
+                          <SelectItem
+                            value={key}
+                            key={key}
+                            disabled={isUnavailable}
+                            className={cn({ 'line-through': isUnavailable })}
+                          >
+                            {value.label}
+                          </SelectItem>
+                        );
+                      })}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -145,6 +186,11 @@ export function UpsertGlucoseLogForm({
                         field.onChange(date);
                       }
                     }}
+                    onDateChange={(date) => {
+                      if (date) {
+                        handleDateChange(date);
+                      }
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
@@ -158,14 +204,18 @@ export function UpsertGlucoseLogForm({
               <FormItem>
                 <FormLabel>Notas</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Adicione comentários" {...field} />
+                  <Textarea
+                    {...field}
+                    className="text-sm"
+                    placeholder="Adicione comentários"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? 'Salvando...' : 'Salvar'}
+            Salvar
           </Button>
         </fieldset>
       </form>

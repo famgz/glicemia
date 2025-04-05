@@ -23,13 +23,19 @@ const minutes = Array.from({ length: 12 }, (_, i) => i * 5);
 interface Props {
   date?: Date;
   onSelect: (date?: Date) => void;
+  onDateChange: (date?: Date) => void;
 }
 
-export default function DateTimePicker24h({ date, onSelect }: Props) {
+export default function DateTimePicker24h({
+  date,
+  onSelect,
+  onDateChange,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   function handleDateSelect(selectedDate: Date | undefined) {
     if (selectedDate) {
+      onDateChange(selectedDate);
       onSelect(selectedDate);
     }
   }

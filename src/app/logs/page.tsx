@@ -1,19 +1,19 @@
 'use server';
 
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { getSessionUserElseRedirectToLogin } from '@/actions/auth';
 import { getGlucoseLogs } from '@/actions/glucose';
 import CreateGlucoseLogButton from '@/components/glucose-log/create-glucose-log-button';
 import GlucoseLogCards from '@/components/glucose-log/glucose-log-cards';
-import { HEADERS_TIMEZONE_STRING } from '@/constants/time';
+import { COOKIES_TIMEZONE_STRING } from '@/constants/time';
 import { formatDate } from '@/utils/time';
 
 export default async function LogsPage() {
   const user = await getSessionUserElseRedirectToLogin();
   const glucoseLogs = await getGlucoseLogs();
-  const timeZone = (await headers()).get(HEADERS_TIMEZONE_STRING) || '';
+  const timeZone = (await cookies()).get(COOKIES_TIMEZONE_STRING)?.value || '';
 
   if (!glucoseLogs) return notFound();
 
