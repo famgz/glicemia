@@ -49,6 +49,8 @@
 
 `npx shadcn@latest add table`
 
+`npx shadcn@latest add chart`
+
 
 ## Date
 
