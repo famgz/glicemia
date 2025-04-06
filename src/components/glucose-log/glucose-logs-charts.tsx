@@ -1,7 +1,7 @@
 'use client';
 
 import { GlucoseLog, MealType } from '@prisma/client';
-import * as React from 'react';
+import { subDays } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
@@ -26,24 +26,39 @@ const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const description = 'Gráficos de medições';
 
-// const MAX_DAYS_RANGE = 90;
+const MAX_DAYS_RANGE = 90;
 
 interface Props {
   glucoseLogs: GlucoseLog[];
 }
 
 export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
-  const availableMealTypes = useMemo(
-    () => Array.from(new Set(glucoseLogs.map((x) => x.mealType))),
-    [glucoseLogs]
-  );
-  const mealTypes = useMemo(
-    () =>
-      Object.keys(glucoseLogMap).filter((key) =>
-        availableMealTypes.includes(key as MealType)
-      ),
-    [availableMealTypes]
-  );
+  const croppedGlucoseLogs = useMemo(() => {
+    const newestDate = glucoseLogs[0].date;
+    const lastDate = subDays(newestDate, MAX_DAYS_RANGE);
+    const res = glucoseLogs.filter(
+      (x) => x.date.getTime() >= lastDate.getTime()
+    );
+    return res;
+  }, [glucoseLogs]);
+
+  const chartData = useMemo(() => {
+    const res = groupGlucoseLogsByDayAndMealType({
+      glucoseLogs: croppedGlucoseLogs,
+      timeZone,
+      fillDayGaps: true,
+    });
+    return res;
+  }, [croppedGlucoseLogs]);
+
+  const mealTypes = useMemo(() => {
+    const loggedMealTypes = Array.from(
+      new Set(croppedGlucoseLogs.map((x) => x.mealType))
+    );
+    return Object.keys(glucoseLogMap).filter((key) =>
+      loggedMealTypes.includes(key as MealType)
+    );
+  }, [croppedGlucoseLogs]);
 
   const chartConfig = useMemo(
     () =>
@@ -55,7 +70,7 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
           (acc, key) => ({
             ...acc,
             [key]: {
-              label: glucoseLogMap[key as MealType]?.label || 'asd',
+              label: glucoseLogMap[key as MealType].label,
               color: 'hsl(var(--primary))',
             },
           }),
@@ -74,25 +89,15 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
       mealTypes.reduce(
         (acc, key) => ({
           ...acc,
-          [key]: glucoseLogs.filter((x) => x.mealType === key).length,
+          [key]: croppedGlucoseLogs.filter((x) => x.mealType === key).length,
         }),
         {}
       ),
-    [glucoseLogs, mealTypes]
+    [croppedGlucoseLogs, mealTypes]
   );
 
-  const chartData = useMemo(
-    () =>
-      groupGlucoseLogsByDayAndMealType({
-        glucoseLogs,
-        timeZone,
-        fillDayGaps: true,
-      }),
-    [glucoseLogs]
-  );
-
-  if (!(glucoseLogs && mealTypes)) {
-    return <p>Nenhum dados registrado</p>;
+  if (!(croppedGlucoseLogs && mealTypes)) {
+    return <p>Nenhum dado registrado</p>;
   }
 
   return (
@@ -100,7 +105,9 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
       <CardHeader className="flex flex-col items-stretch gap-0 space-y-0 border-b !p-0 sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-4 sm:border-r sm:py-6">
           <CardTitle>Gráfico de Medições</CardTitle>
-          <CardDescription>Mostrando últimos 3 meses</CardDescription>
+          <CardDescription>
+            Mostrando últimos {MAX_DAYS_RANGE} dias
+          </CardDescription>
         </div>
         <div className="flex flex-wrap divide-x">
           {mealTypes.map((key) => {
@@ -109,7 +116,7 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
               <button
                 key={chart}
                 data-active={activeChart === chart}
-                className="data-[active=true]:bg-muted-foreground/15 relative z-30 flex flex-1 flex-col items-center justify-center gap-1 border-t px-2 py-4 text-left sm:border-t-0 sm:p-5"
+                className="data-[active=true]:bg-muted-foreground/10 relative z-30 flex flex-1 flex-col items-center justify-center gap-1 border-t px-2 py-4 text-left sm:border-t-0 sm:p-5"
                 onClick={() => setActiveChart(chart)}
               >
                 <div className="flex flex-1 flex-col justify-between gap-2">

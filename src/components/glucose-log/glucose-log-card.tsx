@@ -21,7 +21,10 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
     <Card
       className={cn(
         'hover:bg-muted-foreground/5 w-full min-w-[220px] gap-3 py-4',
-        { 'bg-destructive/4 hover:bg-destructive/6': isAboveMax }
+        {
+          'from-destructive/6 hover:bg-destructive/4 via-destructive/6 to-destructive/2 bg-gradient-to-r':
+            isAboveMax,
+        }
       )}
     >
       <CardHeader className="px-4">
