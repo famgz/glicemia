@@ -25,8 +25,8 @@ export default async function UserPage({ params, searchParams }: Props) {
   }
 
   return (
-    <div className="container space-y-5">
-      <div>
+    <div className="container space-y-6">
+      <div className="flex items-start justify-between gap-5">
         <h1 className="text-lg">
           Histórico de medições de{' '}
           <span className="font-semibold capitalize">
@@ -34,21 +34,21 @@ export default async function UserPage({ params, searchParams }: Props) {
           </span>
         </h1>
         <div className="flex items-center justify-end gap-2">
-          <Button
-            asChild
-            variant={mode === 'table' ? 'default' : 'outline'}
-            size={'icon'}
-          >
-            <Link href={`/user/${slug}?mode=table`}>
+          <Button asChild variant={mode === 'table' ? 'default' : 'outline'}>
+            <Link
+              href={`/user/${slug}?mode=table`}
+              className="flex items-center gap-2"
+            >
+              <span className="max-sm:hidden">Tabela</span>
               <TableOfContentsIcon />
             </Link>
           </Button>
-          <Button
-            asChild
-            variant={mode === 'chart' ? 'default' : 'outline'}
-            size={'icon'}
-          >
-            <Link href={`/user/${slug}?mode=chart`}>
+          <Button asChild variant={mode === 'chart' ? 'default' : 'outline'}>
+            <Link
+              href={`/user/${slug}?mode=chart`}
+              className="flex items-center gap-2"
+            >
+              <span className="max-sm:hidden">Gráfico</span>
               <ChartColumnDecreasingIcon />
             </Link>
           </Button>

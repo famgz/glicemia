@@ -13,45 +13,41 @@ export function groupGlucoseLogsByDay(
   const glucoseLogsSortedByDay = Object.groupBy(glucoseLogs, (x) =>
     formatDate(x.date, dateFormatOption || 'short-date', timeZone)
   ) as GlucoseLogByDay;
-  Object.values(glucoseLogsSortedByDay).forEach((logs) =>
-    logs.sort((a, b) => a.date.getTime() - b.date.getTime())
-  );
+  Object.values(glucoseLogsSortedByDay).forEach((logs) => {
+    logs.sort((a, b) => {
+      return a.date.getTime() - b.date.getTime();
+    });
+  });
   return glucoseLogsSortedByDay;
 }
 
 type GlucoseLogEntry = { date: string } & Partial<Record<MealType, number>>;
 
-export function groupGlucoseLogsByDayAndMealType(
-  glucoseLogs: GlucoseLog[],
-  timeZone: string = DEFAULT_TIMEZONE,
-  dateFormatOption: DateFormatOption = 'full-date-inverted',
-  fillDayGaps: boolean = true,
-  dateOrderDir: 'asc' | 'desc' = 'asc'
-): GlucoseLogEntry[] {
-  const dateMap = new Map<
-    string,
-    { entry: GlucoseLogEntry; originalDate: Date }
-  >();
+export function groupGlucoseLogsByDayAndMealType({
+  glucoseLogs,
+  timeZone = DEFAULT_TIMEZONE,
+  fillDayGaps = true,
+}: {
+  glucoseLogs: GlucoseLog[];
+  timeZone: string;
+  fillDayGaps: boolean;
+}): GlucoseLogEntry[] {
+  const dateFormatOption = 'full-date-inverted';
+  const dateMap = new Map<string, GlucoseLogEntry>();
   for (const log of glucoseLogs) {
     const dateKey = formatDate(log.date, dateFormatOption, timeZone);
     const existing = dateMap.get(dateKey) || {
-      entry: { date: dateKey },
-      originalDate: log.date,
+      date: dateKey,
     };
-    existing.entry[log.mealType] = log.value;
+    existing[log.mealType] = log.value;
     dateMap.set(dateKey, existing);
   }
-  const result = Array.from(dateMap.values());
-  result.sort((a, b) =>
-    dateOrderDir === 'asc'
-      ? a.originalDate.getTime() - b.originalDate.getTime()
-      : b.originalDate.getTime() - a.originalDate.getTime()
-  );
-  let entries = result.map((item) => item.entry);
-  if (fillDayGaps && entries.length > 0) {
+  let result = Array.from(dateMap.values());
+  result.sort((a, b) => a.date.localeCompare(b.date));
+  if (fillDayGaps && result.length > 1) {
     const filledEntries: GlucoseLogEntry[] = [];
-    const firstDate = result[0].originalDate;
-    const lastDate = result[result.length - 1].originalDate;
+    const firstDate = new Date(result[0].date);
+    const lastDate = new Date(result[result.length - 1].date);
     let currentIndex = 0;
     for (
       let currentDay = new Date(firstDate);
@@ -59,19 +55,16 @@ export function groupGlucoseLogsByDayAndMealType(
       currentDay.setDate(currentDay.getDate() + 1)
     ) {
       const currentDayKey = formatDate(currentDay, dateFormatOption, timeZone);
-      if (
-        currentIndex < entries.length &&
-        entries[currentIndex].date === currentDayKey
-      ) {
-        filledEntries.push(entries[currentIndex]);
+      if (result[currentIndex].date === currentDayKey) {
+        filledEntries.push(result[currentIndex]);
         currentIndex++;
       } else {
         filledEntries.push({ date: currentDayKey });
       }
     }
-    entries = filledEntries;
+    result = filledEntries;
   }
-  return entries;
+  return result;
 }
 
 export function isGlucoseLogAboveMax(glucoseLog: GlucoseLog) {

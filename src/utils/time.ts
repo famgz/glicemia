@@ -3,12 +3,14 @@ import { ptBR } from 'date-fns/locale';
 import { formatInTimeZone } from 'date-fns-tz';
 
 const dateFormatOptionsMap = {
+  'day-month': 'dd MMM',
+  'full-date-hour-minute-long': `d 'de' MMMM, yyyy HH:mm`,
   'full-date-hour-minute': 'dd/MM/yyyy HH:mm',
-  'long-date': "d 'de' MMMM, yyyy",
-  'full-date': 'dd/MM/yyyy',
   'full-date-inverted': 'yyyy/MM/dd',
-  'short-date': 'dd/MM/yy',
+  'full-date': 'dd/MM/yyyy',
   'hour-minute': 'HH:mm',
+  'long-date': "d 'de' MMMM, yyyy",
+  'short-date': 'dd/MM/yy',
 };
 
 export type DateFormatOption = keyof typeof dateFormatOptionsMap;
