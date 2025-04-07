@@ -1,7 +1,8 @@
 'use client';
 
 import { GlucoseLog, MealType } from '@prisma/client';
-import { subDays } from 'date-fns';
+import { startOfDay, subDays } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { useMemo, useState } from 'react';
 import {
   Bar,
@@ -52,10 +53,13 @@ interface Props {
 export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
   const [daysRange, setDayRange] = useState(DAYS_RANGES[0]);
   const croppedGlucoseLogs = useMemo(() => {
-    const newestDate = glucoseLogs[0].date;
-    const lastDate = subDays(newestDate, daysRange);
+    const newestLog = glucoseLogs.reduce((newest, curr) =>
+      curr.date > newest.date ? curr : newest
+    );
+    const newestDay = startOfDay(toZonedTime(newestLog.date, timeZone));
+    const lastDay = subDays(newestDay, daysRange - 1);
     const res = glucoseLogs.filter(
-      (x) => x.date.getTime() >= lastDate.getTime()
+      (x) => x.date.getTime() >= lastDay.getTime()
     );
     return res;
   }, [glucoseLogs, daysRange]);
