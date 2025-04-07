@@ -7,6 +7,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   LabelList,
   ReferenceLine,
   XAxis,
@@ -34,6 +35,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { glucoseLogMap } from '@/constants/glucose-log';
+import { cn } from '@/lib/utils';
 import { groupGlucoseLogsByDayAndMealType } from '@/utils/glucose-log';
 import { formatDate } from '@/utils/time';
 
@@ -41,7 +43,7 @@ const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const description = 'Gráficos de medições';
 
-const MONTH_RANGES = [1, 3, 6, 12];
+const MONTH_RANGES = [1, 2, 3, 6];
 
 interface Props {
   glucoseLogs: GlucoseLog[];
@@ -169,13 +171,13 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
         <CardContent className="p-3 sm:p-6">
           <ChartContainer
             config={chartConfig}
-            className="aspect-auto h-[350px] w-full"
+            className="aspect-auto h-[300px] w-full"
           >
             <BarChart
               accessibilityLayer
               data={chartData}
               margin={{
-                top: 40,
+                // top: 40,
                 left: 12,
                 right: 12,
               }}
@@ -187,8 +189,9 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                 strokeDasharray="6 6"
                 className="opacity-60"
                 ifOverflow="visible"
+                isFront={true}
                 label={{
-                  position: 'top',
+                  position: 'left',
                   value: glucoseLogMap[activeChart as MealType].maxValue,
                   fill: 'var(--destructive)',
                   fontSize: 12,
@@ -208,7 +211,7 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
               />
               <YAxis
                 domain={[
-                  (dataMin: number) => Math.max(0, dataMin * 0.9),
+                  (dataMin: number) => Math.max(0, dataMin * 0.05),
                   (dataMax: number) =>
                     Math.max(
                       glucoseLogMap[activeChart as MealType].maxValue * 1.1,
@@ -218,7 +221,7 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                 tickLine={false}
                 tick={{ fontSize: 0 }}
                 axisLine={false}
-                width={1}
+                width={12}
               />
               <ChartTooltip
                 content={
@@ -231,12 +234,30 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                   />
                 }
               />
-              <Bar dataKey={activeChart} fill={`var(--primary)`} radius={4}>
+              <Bar
+                dataKey={activeChart}
+                radius={chartData.length <= 30 ? 4 : 0}
+              >
+                {chartData.map((entry, index) => {
+                  const value = entry[activeChart as keyof typeof entry];
+                  const maxValue =
+                    glucoseLogMap[activeChart as MealType].maxValue;
+                  return (
+                    <Cell
+                      key={`cell-${index}`}
+                      className={cn('fill-primary opacity-60', {
+                        'fill-sky-600': Number(value) > maxValue,
+                      })}
+                    />
+                  );
+                })}
                 <LabelList
                   position="top"
                   offset={8}
-                  className="fill-foreground"
-                  fontSize={10}
+                  className={cn('fill-foreground', {
+                    hidden: chartData.length > 60,
+                  })}
+                  fontSize={chartData.length <= 33 ? 12 : 10}
                 />
               </Bar>
             </BarChart>
