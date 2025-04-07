@@ -9,6 +9,8 @@
 
 `npm install @prisma/client`
 
+`npm i -D ts-node`  // for run seed.ts
+
 
 ## Auth
 
