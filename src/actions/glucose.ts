@@ -89,12 +89,6 @@ export async function getGlucoseLogsByLocalDay(date: Date) {
     const dateStart = startOfDay(zonedDate);
     const dateEnd = endOfDay(zonedDate);
     new Date().getTimezoneOffset();
-    console.log({
-      date,
-      zonedDate,
-      dateStart,
-      dateEnd,
-    });
     const res = getGlucoseLogsByDateRange(dateStart, dateEnd);
     return res;
   } catch (e) {

@@ -1,7 +1,7 @@
 'use client';
 
 import { GlucoseLog, MealType } from '@prisma/client';
-import { subMonths } from 'date-fns';
+import { subDays } from 'date-fns';
 import { useMemo, useState } from 'react';
 import {
   Bar,
@@ -43,22 +43,22 @@ const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const description = 'Gráficos de medições';
 
-const MONTH_RANGES = [1, 2, 3, 6];
+const DAYS_RANGES = [7, 15, 30, 60, 90, 180];
 
 interface Props {
   glucoseLogs: GlucoseLog[];
 }
 
 export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
-  const [monthRange, setMonthRange] = useState(3);
+  const [daysRange, setDayRange] = useState(DAYS_RANGES[0]);
   const croppedGlucoseLogs = useMemo(() => {
     const newestDate = glucoseLogs[0].date;
-    const lastDate = subMonths(newestDate, monthRange);
+    const lastDate = subDays(newestDate, daysRange);
     const res = glucoseLogs.filter(
       (x) => x.date.getTime() >= lastDate.getTime()
     );
     return res;
-  }, [glucoseLogs, monthRange]);
+  }, [glucoseLogs, daysRange]);
 
   const chartData = useMemo(() => {
     const res = groupGlucoseLogsByDayAndMealType({
@@ -102,6 +102,11 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
     mealTypes[0] as keyof typeof chartConfig
   );
 
+  const mealTypeMaxValue = useMemo(
+    () => glucoseLogMap[activeChart as MealType].maxValue,
+    [activeChart]
+  );
+
   const total = useMemo(
     () =>
       mealTypes.reduce(
@@ -120,18 +125,19 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
 
   return (
     <div className="space-y-5">
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end gap-2">
+        <span className="text-sm font-light">Mostrar últimos</span>
         <Select
-          value={String(monthRange)}
-          onValueChange={(value) => setMonthRange(Number(value))}
+          value={String(daysRange)}
+          onValueChange={(value) => setDayRange(Number(value))}
         >
-          <SelectTrigger className="w-[120px]">
-            <SelectValue placeholder="Meses" />
+          <SelectTrigger className="w-[110px]">
+            <SelectValue placeholder="Dias" />
           </SelectTrigger>
           <SelectContent>
-            {MONTH_RANGES.map((months, i) => (
-              <SelectItem value={String(months)} key={i}>
-                {`${months} ${months > 1 ? 'meses' : 'mês'}`}
+            {DAYS_RANGES.map((days, i) => (
+              <SelectItem value={String(days)} key={i}>
+                {`${days} dias`}
               </SelectItem>
             ))}
           </SelectContent>
@@ -142,7 +148,7 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
           <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-4 sm:border-r sm:py-6">
             <CardTitle>Gráfico de Medições</CardTitle>
             <CardDescription>
-              {`Mostrando ${monthRange > 1 ? 'últimos' : 'último'} ${monthRange} ${monthRange > 1 ? 'meses' : 'mês'}`}
+              {`Registros dos últimos ${daysRange} dias`}
             </CardDescription>
           </div>
           <div className="flex flex-wrap divide-x">
@@ -152,7 +158,7 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                 <button
                   key={chart}
                   data-active={activeChart === chart}
-                  className="data-[active=true]:bg-muted-foreground/10 relative z-30 flex flex-1 flex-col items-center justify-center gap-1 border-t px-2 py-4 text-left sm:border-t-0 sm:p-5"
+                  className="data-[active=true]:bg-muted-foreground/10 relative z-30 flex flex-1 flex-col items-center justify-center gap-1 border-t px-2 py-3 text-left sm:border-t-0 sm:p-5"
                   onClick={() => setActiveChart(chart)}
                 >
                   <div className="flex flex-1 flex-col justify-between gap-2">
@@ -177,14 +183,14 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
               accessibilityLayer
               data={chartData}
               margin={{
-                // top: 40,
+                top: 24,
                 left: 12,
                 right: 12,
               }}
             >
               <CartesianGrid vertical={false} />
               <ReferenceLine
-                y={glucoseLogMap[activeChart as MealType].maxValue}
+                y={mealTypeMaxValue}
                 stroke="var(--destructive)"
                 strokeDasharray="6 6"
                 className="opacity-60"
@@ -192,10 +198,12 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                 isFront={true}
                 label={{
                   position: 'left',
-                  value: glucoseLogMap[activeChart as MealType].maxValue,
+                  value: mealTypeMaxValue,
                   fill: 'var(--destructive)',
-                  fontSize: 12,
+                  fontSize: 10,
                   strokeDashoffset: 20,
+                  offset: 8,
+                  fontWeight: 'bold',
                 }}
               />
               <XAxis
@@ -204,26 +212,25 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                 axisLine={false}
                 tickMargin={8}
                 minTickGap={32}
-                className="capitalize"
+                className="text-xs capitalize max-sm:text-[10px]"
                 tickFormatter={(value) =>
                   formatDate(new Date(value), 'day-month')
                 }
               />
               <YAxis
+                type="number"
                 domain={[
-                  (dataMin: number) => Math.max(0, dataMin * 0.05),
-                  (dataMax: number) =>
-                    Math.max(
-                      glucoseLogMap[activeChart as MealType].maxValue * 1.1,
-                      dataMax * 1.1
-                    ),
+                  0,
+                  (dataMax: number) => Math.max(dataMax, mealTypeMaxValue + 10),
                 ]}
-                tickLine={false}
-                tick={{ fontSize: 0 }}
+                width={14}
                 axisLine={false}
-                width={12}
+                allowDecimals={false}
+                tick={{ fontSize: 10 }}
+                tickLine={false}
               />
               <ChartTooltip
+                filterNull={false}
                 content={
                   <ChartTooltipContent
                     className="w-[150px]"
@@ -234,30 +241,29 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                   />
                 }
               />
-              <Bar
-                dataKey={activeChart}
-                radius={chartData.length <= 30 ? 4 : 0}
-              >
+              <Bar dataKey={activeChart} fill="var(--primary)">
                 {chartData.map((entry, index) => {
                   const value = entry[activeChart as keyof typeof entry];
-                  const maxValue =
-                    glucoseLogMap[activeChart as MealType].maxValue;
                   return (
                     <Cell
                       key={`cell-${index}`}
+                      radius={chartData.length <= 33 ? 4 : 0}
                       className={cn('fill-primary opacity-60', {
-                        'fill-sky-600': Number(value) > maxValue,
+                        'fill-sky-600': Number(value) > mealTypeMaxValue,
                       })}
                     />
                   );
                 })}
+
                 <LabelList
                   position="top"
                   offset={8}
-                  className={cn('fill-foreground', {
-                    hidden: chartData.length > 60,
+                  className={cn('fill-muted-foreground', {
+                    'max-sm:hidden': chartData.length >= 30,
+                    'max-lg:hidden': chartData.length >= 60,
+                    hidden: chartData.length > 80,
                   })}
-                  fontSize={chartData.length <= 33 ? 12 : 10}
+                  fontSize={chartData.length <= 33 ? 10 : 10}
                 />
               </Bar>
             </BarChart>

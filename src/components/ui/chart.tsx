@@ -180,6 +180,7 @@ function ChartTooltipContent({
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
         {payload.map((item, index) => {
+          const hasValue = item.value !== null && item.value !== undefined;
           const key = `${nameKey || item.name || item.dataKey || 'value'}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
           const indicatorColor = color || item.payload.fill || item.color;
@@ -199,7 +200,8 @@ function ChartTooltipContent({
                   {itemConfig?.icon ? (
                     <itemConfig.icon />
                   ) : (
-                    !hideIndicator && (
+                    !hideIndicator &&
+                    hasValue && (
                       <div
                         className={cn(
                           'shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)',
@@ -226,15 +228,21 @@ function ChartTooltipContent({
                       nestLabel ? 'items-end' : 'items-center'
                     )}
                   >
-                    <div className="grid gap-1.5">
-                      {nestLabel ? tooltipLabel : null}
+                    {hasValue ? (
+                      <>
+                        <div className="grid gap-1.5">
+                          {nestLabel ? tooltipLabel : null}
+                          <span className="text-muted-foreground">
+                            {itemConfig?.label || item.name}
+                          </span>
+                        </div>
+                        <span className="text-foreground font-mono font-medium tabular-nums">
+                          {item.value!.toLocaleString()}
+                        </span>
+                      </>
+                    ) : (
                       <span className="text-muted-foreground">
-                        {itemConfig?.label || item.name}
-                      </span>
-                    </div>
-                    {item.value && (
-                      <span className="text-foreground font-mono font-medium tabular-nums">
-                        {item.value.toLocaleString()}
+                        sem registro
                       </span>
                     )}
                   </div>
