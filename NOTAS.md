@@ -62,3 +62,9 @@
 ## Slug
 
 `npm i slugify`
+
+
+
+## Config
+
+`npm install dotenv-cli --save-dev`
