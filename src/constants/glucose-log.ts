@@ -24,6 +24,10 @@ export const glucoseLogMap: GlucoseLogMap = {
   },
   AFTER_AM_SNACK: {
     label: 'Pós lanche matinal',
+    maxValue: MAX_VALUE_POST_MEAL,
+  },
+  BEFORE_LUNCH: {
+    label: 'Antes almoço',
     maxValue: MAX_VALUE_PRE_MEAL,
   },
   AFTER_LUNCH: {
@@ -32,6 +36,10 @@ export const glucoseLogMap: GlucoseLogMap = {
   },
   AFTER_PM_SNACK: {
     label: 'Pós lanche da tarde',
+    maxValue: MAX_VALUE_POST_MEAL,
+  },
+  BEFORE_DINNER: {
+    label: 'Antes jantar',
     maxValue: MAX_VALUE_PRE_MEAL,
   },
   AFTER_DINNER: {
@@ -40,7 +48,7 @@ export const glucoseLogMap: GlucoseLogMap = {
   },
   AFTER_NIGHT_SNACK: {
     label: 'Pós ceia',
-    maxValue: MAX_VALUE_PRE_MEAL,
+    maxValue: MAX_VALUE_POST_MEAL,
   },
   BEDTIME: {
     label: 'Antes de dormir',
