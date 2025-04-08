@@ -1,8 +1,8 @@
 'use server';
 
 import { MealType } from '@prisma/client';
-import { endOfDay, startOfDay } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { addDays, startOfDay } from 'date-fns';
+import { fromZonedTime, toZonedTime } from 'date-fns-tz';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 
@@ -52,8 +52,8 @@ export async function getGlucoseLogById(id: string) {
 }
 
 export async function getGlucoseLogsByDateRange(
-  dateStart: Date,
-  dateEnd: Date
+  dateStartInclusive: Date,
+  dateEndExclusive: Date
 ) {
   try {
     const userId = await getSessionUserIdElseThrow();
@@ -61,8 +61,8 @@ export async function getGlucoseLogsByDateRange(
       where: {
         userId,
         date: {
-          gte: dateStart,
-          lte: dateEnd,
+          gte: dateStartInclusive,
+          lt: dateEndExclusive,
         },
       },
       orderBy: {
@@ -86,10 +86,11 @@ export async function getGlucoseLogsByLocalDay(date: Date) {
       throw new Error('Invalid date input');
     }
     const zonedDate = toZonedTime(date, userTimezone);
-    const dateStart = startOfDay(zonedDate);
-    const dateEnd = endOfDay(zonedDate);
-    new Date().getTimezoneOffset();
-    const res = getGlucoseLogsByDateRange(dateStart, dateEnd);
+    const zonedStart = startOfDay(zonedDate);
+    const zonedEnd = startOfDay(addDays(zonedDate, 1));
+    const utcStart = fromZonedTime(zonedStart, userTimezone);
+    const utcEnd = fromZonedTime(zonedEnd, userTimezone);
+    const res = await getGlucoseLogsByDateRange(utcStart, utcEnd);
     return res;
   } catch (e) {
     console.error('Failed to get glucose logs by local day', e);
