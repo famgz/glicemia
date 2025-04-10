@@ -214,7 +214,7 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
         <CardContent className="p-3 sm:p-6">
           <ChartContainer
             config={chartConfig}
-            className="aspect-auto h-[300px] w-full"
+            className="aspect-auto h-[300px] w-full lg:h-[400px]"
             ref={chartContainerRef}
           >
             <BarChart

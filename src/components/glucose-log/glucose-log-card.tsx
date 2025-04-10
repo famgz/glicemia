@@ -38,7 +38,7 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
       <CardContent className="flex items-end justify-between px-4">
         <GlucoseLogValue glucoseLog={glucoseLog} />
         {glucoseLog.notes && (
-          <AlignLeftIcon className="text-muted-foreground" />
+          <AlignLeftIcon className="text-muted-foreground/70" />
         )}
       </CardContent>
     </Card>
