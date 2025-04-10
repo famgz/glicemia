@@ -1,4 +1,5 @@
 import { GlucoseLog, MealType } from '@prisma/client';
+import { subDays } from 'date-fns';
 
 import { glucoseLogMap } from '@/constants/glucose-log';
 import { DEFAULT_TIMEZONE } from '@/constants/time';
@@ -21,6 +22,8 @@ export function groupGlucoseLogsByDay(
   return glucoseLogsSortedByDay;
 }
 
+const MIN_DAYS_RANGE = 7;
+
 type GlucoseLogEntry = { date: string } & Partial<Record<MealType, number>>;
 
 export function groupGlucoseLogsByDayAndMealType({
@@ -42,29 +45,31 @@ export function groupGlucoseLogsByDayAndMealType({
     existing[log.mealType] = log.value;
     dateMap.set(dateKey, existing);
   }
-  let result = Array.from(dateMap.values());
-  result.sort((a, b) => a.date.localeCompare(b.date));
-  if (fillDayGaps && result.length > 1) {
-    const filledEntries: GlucoseLogEntry[] = [];
-    const firstDate = new Date(result[0].date);
-    const lastDate = new Date(result[result.length - 1].date);
-    let currentIndex = 0;
-    for (
-      let currentDay = new Date(firstDate);
-      currentDay <= lastDate;
-      currentDay.setDate(currentDay.getDate() + 1)
-    ) {
-      const currentDayKey = formatDate(currentDay, dateFormatOption, timeZone);
-      if (result[currentIndex].date === currentDayKey) {
-        filledEntries.push(result[currentIndex]);
-        currentIndex++;
-      } else {
-        filledEntries.push({ date: currentDayKey });
-      }
-    }
-    result = filledEntries;
+  const entries = Array.from(dateMap.values());
+  entries.sort((a, b) => a.date.localeCompare(b.date));
+  if (!fillDayGaps) {
+    return entries;
   }
-  return result;
+  const filledEntries: GlucoseLogEntry[] = [];
+  let firstDate = new Date(entries[0].date);
+  const lastDate = new Date(entries[entries.length - 1].date);
+  const minFirstDate = subDays(lastDate, MIN_DAYS_RANGE - 1)
+  firstDate = firstDate < minFirstDate ? firstDate : minFirstDate
+  let currentIndex = 0;
+  for (
+    let currentDay = new Date(firstDate);
+    currentDay <= lastDate;
+    currentDay.setDate(currentDay.getDate() + 1)
+  ) {
+    const currentDayKey = formatDate(currentDay, dateFormatOption, timeZone);
+    if (entries[currentIndex].date === currentDayKey) {
+      filledEntries.push(entries[currentIndex]);
+      currentIndex++;
+    } else {
+      filledEntries.push({ date: currentDayKey });
+    }
+  }
+  return filledEntries;
 }
 
 export function isGlucoseLogAboveMax(glucoseLog: GlucoseLog) {
