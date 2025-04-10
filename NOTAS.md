@@ -68,3 +68,8 @@
 ## Config
 
 `npm install dotenv-cli --save-dev`
+
+
+## Debug
+
+`npm install -g win-node-env`

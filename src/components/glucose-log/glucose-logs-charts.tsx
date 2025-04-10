@@ -3,7 +3,7 @@
 import { GlucoseLog, MealType } from '@prisma/client';
 import { startOfDay, subDays } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -51,6 +51,8 @@ interface Props {
 }
 
 export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
+  const chartContainerRef = useRef<HTMLDivElement | null>(null);
+  const [chartWidth, setChartWidth] = useState(0);
   const [daysRange, setDayRange] = useState(DAYS_RANGES[0]);
   const croppedGlucoseLogs = useMemo(() => {
     const newestLog = glucoseLogs.reduce((newest, curr) =>
@@ -123,6 +125,37 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
     [croppedGlucoseLogs, mealTypes]
   );
 
+  const estimatedBarWidth = useMemo(() => {
+    const gap = 4;
+    const numBars = chartData.length || 1;
+    const barWidth = (chartWidth - numBars * gap) / numBars;
+    return Math.max(barWidth, 0);
+  }, [chartWidth, chartData.length]);
+
+  const barRadius = useMemo(() => {
+    const reduceFactor = 8;
+    const maxRadius = 16;
+    let radius = Math.floor(
+      Math.max(Math.min(estimatedBarWidth / reduceFactor, maxRadius), 0)
+    );
+    radius = radius % 2 === 0 ? radius : radius - 1;
+    console.log(radius);
+    return radius;
+  }, [estimatedBarWidth]);
+
+  useEffect(() => {
+    if (!chartContainerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.contentRect) {
+          setChartWidth(entry.contentRect.width);
+        }
+      }
+    });
+    observer.observe(chartContainerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   if (!(croppedGlucoseLogs && mealTypes)) {
     return <p>Nenhum dado registrado</p>;
   }
@@ -182,13 +215,15 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
           <ChartContainer
             config={chartConfig}
             className="aspect-auto h-[300px] w-full"
+            ref={chartContainerRef}
           >
             <BarChart
               accessibilityLayer
+              width={chartWidth}
               data={chartData}
               margin={{
                 top: 24,
-                left: 12,
+                left: 14,
                 right: 12,
               }}
             >
@@ -196,18 +231,16 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
               <ReferenceLine
                 y={mealTypeMaxValue}
                 stroke="var(--destructive)"
-                strokeDasharray="6 6"
-                className="opacity-60"
+                strokeDasharray="8 8"
+                className="text-[10px] font-bold opacity-60 sm:text-xs"
                 ifOverflow="visible"
                 isFront={true}
                 label={{
                   position: 'left',
                   value: mealTypeMaxValue,
                   fill: 'var(--destructive)',
-                  fontSize: 10,
                   strokeDashoffset: 20,
                   offset: 8,
-                  fontWeight: 'bold',
                 }}
               />
               <XAxis
@@ -230,8 +263,8 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                 width={14}
                 axisLine={false}
                 allowDecimals={false}
-                tick={{ fontSize: 10 }}
                 tickLine={false}
+                className="text-[10px] sm:text-xs"
               />
               <ChartTooltip
                 filterNull={false}
@@ -251,23 +284,20 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                   return (
                     <Cell
                       key={`cell-${index}`}
-                      radius={chartData.length <= 33 ? 4 : 0}
+                      radius={barRadius}
                       className={cn('fill-primary opacity-60', {
                         'fill-sky-600': Number(value) > mealTypeMaxValue,
                       })}
                     />
                   );
                 })}
-
                 <LabelList
                   position="top"
                   offset={8}
                   className={cn('fill-muted-foreground', {
-                    'max-sm:hidden': chartData.length >= 30,
-                    'max-lg:hidden': chartData.length >= 60,
-                    hidden: chartData.length > 80,
+                    hidden: estimatedBarWidth < 12,
                   })}
-                  fontSize={chartData.length <= 33 ? 10 : 10}
+                  fontSize={estimatedBarWidth < 80 ? 10 : 12}
                 />
               </Bar>
             </BarChart>
