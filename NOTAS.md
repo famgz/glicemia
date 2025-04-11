@@ -1,3 +1,7 @@
+to-dos
+-infinite scroll in /logs and /user/{user}/?=table
+
+
 # Glicemia
 
 

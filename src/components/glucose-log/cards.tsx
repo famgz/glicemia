@@ -4,8 +4,8 @@ import { GlucoseLog } from '@prisma/client';
 import { subDays } from 'date-fns';
 import { cookies } from 'next/headers';
 
-import GlucoseLogCard from '@/components/glucose-log/glucose-log-card';
-import GlucoseLogDetailsDialog from '@/components/glucose-log/glucose-log-details-dialog';
+import GlucoseLogCard from '@/components/glucose-log/card';
+import GlucoseLogDetailsDialog from '@/components/glucose-log/details-dialog';
 import { COOKIES_TIMEZONE_STRING } from '@/constants/time';
 import { groupGlucoseLogsByDay } from '@/utils/glucose-log';
 import { formatDate } from '@/utils/time';

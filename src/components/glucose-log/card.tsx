@@ -3,9 +3,9 @@
 import { GlucoseLog } from '@prisma/client';
 import { AlignLeftIcon } from 'lucide-react';
 
-import GlucoseLogDate from '@/components/glucose-log/glucose-log-date';
-import GlucoseLogMealTypeBadge from '@/components/glucose-log/glucose-log-meal-type-badge';
-import GlucoseLogValue from '@/components/glucose-log/glucose-log-value';
+import GlucoseLogDate from '@/components/glucose-log/date';
+import GlucoseLogMealTypeBadge from '@/components/glucose-log/meal-type-badge';
+import GlucoseLogValue from '@/components/glucose-log/value';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { isGlucoseLogAboveMax } from '@/utils/glucose-log';

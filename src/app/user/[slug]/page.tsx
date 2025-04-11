@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getUserBySlugWithGlucoseLogs } from '@/actions/user';
-import GlucoseLogTable from '@/components/glucose-log/glucose-log-table';
-import GlucoseLogsCharts from '@/components/glucose-log/glucose-logs-charts';
+import GlucoseLogsCharts from '@/components/glucose-log/charts';
+import GlucoseLogTable from '@/components/glucose-log/table';
 import { Button } from '@/components/ui/button';
 
 interface Props {

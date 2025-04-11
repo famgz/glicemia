@@ -3,11 +3,11 @@
 import { GlucoseLog } from '@prisma/client';
 import { ReactNode, useState } from 'react';
 
-import DeleteGlucoseLogButton from '@/components/glucose-log/delete-glucose-log-button';
-import EditGlucoseLogButton from '@/components/glucose-log/edit-glucose-log-button';
-import GlucoseLogDate from '@/components/glucose-log/glucose-log-date';
-import GlucoseLogMealTypeBadge from '@/components/glucose-log/glucose-log-meal-type-badge';
-import GlucoseLogValue from '@/components/glucose-log/glucose-log-value';
+import GlucoseLogDate from '@/components/glucose-log/date';
+import DeleteGlucoseLogButton from '@/components/glucose-log/delete-button';
+import EditGlucoseLogButton from '@/components/glucose-log/edit-button';
+import GlucoseLogMealTypeBadge from '@/components/glucose-log/meal-type-badge';
+import GlucoseLogValue from '@/components/glucose-log/value';
 import {
   Dialog,
   DialogContent,

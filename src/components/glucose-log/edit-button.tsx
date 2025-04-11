@@ -3,7 +3,7 @@
 import { GlucoseLog } from '@prisma/client';
 import { SquarePenIcon } from 'lucide-react';
 
-import UpsertGlucoseLogDialog from '@/components/glucose-log/upsert-glucose-log-dialog';
+import UpsertGlucoseLogDialog from '@/components/glucose-log/upsert-dialog';
 import { Button } from '@/components/ui/button';
 
 interface Props {

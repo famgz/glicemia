@@ -1,6 +1,6 @@
 import { PlusIcon } from 'lucide-react';
 
-import UpsertGlucoseLogDialog from '@/components/glucose-log/upsert-glucose-log-dialog';
+import UpsertGlucoseLogDialog from '@/components/glucose-log/upsert-dialog';
 import { Button } from '@/components/ui/button';
 
 export default function CreateGlucoseLogButton() {

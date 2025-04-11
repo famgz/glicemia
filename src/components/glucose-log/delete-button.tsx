@@ -6,9 +6,9 @@ import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 
 import { deleteGlucoseLog } from '@/actions/glucose';
-import GlucoseLogDate from '@/components/glucose-log/glucose-log-date';
-import GlucoseLogMealTypeBadge from '@/components/glucose-log/glucose-log-meal-type-badge';
-import GlucoseLogValue from '@/components/glucose-log/glucose-log-value';
+import GlucoseLogDate from '@/components/glucose-log/date';
+import GlucoseLogMealTypeBadge from '@/components/glucose-log/meal-type-badge';
+import GlucoseLogValue from '@/components/glucose-log/value';
 import {
   AlertDialog,
   AlertDialogCancel,

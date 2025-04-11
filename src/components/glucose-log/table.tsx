@@ -4,9 +4,9 @@ import { GlucoseLog } from '@prisma/client';
 import { subDays } from 'date-fns';
 import { cookies } from 'next/headers';
 
-import GlucoseLogMealTypeBadge from '@/components/glucose-log/glucose-log-meal-type-badge';
-import { GlucoseLogNotesPopover } from '@/components/glucose-log/glucose-log-notes-popover';
-import GlucoseLogValue from '@/components/glucose-log/glucose-log-value';
+import GlucoseLogMealTypeBadge from '@/components/glucose-log/meal-type-badge';
+import { GlucoseLogNotesPopover } from '@/components/glucose-log/notes-popover';
+import GlucoseLogValue from '@/components/glucose-log/value';
 import {
   Table,
   TableBody,

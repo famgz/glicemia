@@ -3,7 +3,7 @@
 import { GlucoseLog } from '@prisma/client';
 import { ReactNode, useState } from 'react';
 
-import { UpsertGlucoseLogForm } from '@/components/glucose-log/upsert-glucose-log-form';
+import { UpsertGlucoseLogForm } from '@/components/glucose-log/upsert-form';
 import {
   AlertDialog,
   AlertDialogCancel,
