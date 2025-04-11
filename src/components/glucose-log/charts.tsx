@@ -139,7 +139,6 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
       Math.max(Math.min(estimatedBarWidth / reduceFactor, maxRadius), 0)
     );
     radius = radius % 2 === 0 ? radius : radius - 1;
-    console.log(radius);
     return radius;
   }, [estimatedBarWidth]);
 
@@ -195,7 +194,7 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
                 <button
                   key={chart}
                   data-active={activeChart === chart}
-                  className="data-[active=true]:bg-muted-foreground/10 relative z-30 flex flex-1 flex-col items-center justify-center gap-1 border-t px-2 py-3 text-left sm:border-t-0 sm:p-5"
+                  className="data-[active=true]:bg-muted-foreground/10 relative z-30 flex flex-1 flex-col items-center justify-center gap-1 border-t px-2 py-3 text-left max-sm:min-w-20 sm:border-t-0 sm:p-5"
                   onClick={() => setActiveChart(chart)}
                 >
                   <div className="flex flex-1 flex-col justify-between gap-2">
