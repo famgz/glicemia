@@ -21,7 +21,7 @@ import {
   groupGlucoseLogsByDay,
   isGlucoseLogAboveMax,
 } from '@/utils/glucose-log';
-import { formatDate } from '@/utils/time';
+import { formatDate, getWeekDayFromShortDate } from '@/utils/time';
 
 interface Props {
   glucoseLogs: GlucoseLog[];
@@ -30,8 +30,8 @@ interface Props {
 export default async function GlucoseLogTable({ glucoseLogs }: Props) {
   const timeZone = (await cookies()).get(COOKIES_TIMEZONE_STRING)?.value;
   const glucoseLogsByDay = groupGlucoseLogsByDay(glucoseLogs || [], timeZone);
-  const today = formatDate(new Date(), 'short-date', timeZone);
-  const yesterday = formatDate(subDays(new Date(), 1), 'short-date', timeZone);
+  const today = formatDate(new Date(), 'full-date', timeZone);
+  const yesterday = formatDate(subDays(new Date(), 1), 'full-date', timeZone);
 
   if (glucoseLogs.length === 0) {
     return (
@@ -45,6 +45,8 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
         <div key={day}>
           <p className="text-background from-muted-foreground/50 to-muted-foreground/0 w-full rounded-sm bg-linear-to-r px-3 py-1 text-sm font-semibold">
             {(day === today && 'Hoje') || (day === yesterday && 'Ontem') || day}
+            {', '}
+            <span>{getWeekDayFromShortDate(day)}</span>
           </p>
           <Table>
             <TableHeader>

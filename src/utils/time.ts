@@ -11,6 +11,7 @@ const dateFormatOptionsMap = {
   'hour-minute': 'HH:mm',
   'long-date': "d 'de' MMMM, yyyy",
   'short-date': 'dd/MM/yy',
+  weekday: 'EEEE',
 };
 
 export type DateFormatOption = keyof typeof dateFormatOptionsMap;
@@ -24,4 +25,14 @@ export function formatDate(
   return timeZone
     ? formatInTimeZone(date, timeZone, formatString, { locale: ptBR })
     : format(date, formatString, { locale: ptBR });
+}
+
+export function getWeekDayFromShortDate(shortDate: string) {
+  const [day, month, year] = shortDate.split('/');
+  let weekDay = formatDate(
+    new Date(`${year}/${month}/${day}`),
+    'weekday',
+  );
+  weekDay = `${weekDay[0].toUpperCase()}${weekDay.slice(1)}`;
+  return weekDay;
 }

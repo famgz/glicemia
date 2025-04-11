@@ -12,7 +12,7 @@ export function groupGlucoseLogsByDay(
   dateFormatOption?: DateFormatOption
 ) {
   const glucoseLogsSortedByDay = Object.groupBy(glucoseLogs, (x) =>
-    formatDate(x.date, dateFormatOption || 'short-date', timeZone)
+    formatDate(x.date, dateFormatOption || 'full-date', timeZone)
   ) as GlucoseLogByDay;
   Object.values(glucoseLogsSortedByDay).forEach((logs) => {
     logs.sort((a, b) => {
