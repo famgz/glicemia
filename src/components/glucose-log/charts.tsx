@@ -44,8 +44,8 @@ const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const description = 'Gráficos de medições';
 
-const DAYS_RANGES = [7, 15, 30, 60, 90, 180] as const;
-const DEFAULT_DAYS_RANGE = 15;
+const DAYS_RANGES = [7, 15, 30, 60, 90, 180];
+const DEFAULT_DAYS_RANGE = DAYS_RANGES[0];
 
 interface Props {
   glucoseLogs: GlucoseLog[];

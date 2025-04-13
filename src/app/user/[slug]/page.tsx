@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getUserBySlugWithGlucoseLogs } from '@/actions/user';
+import { auth } from '@/auth';
 import { SocialShareButton } from '@/components/buttons/social-share';
 import GlucoseLogsCharts from '@/components/glucose-log/charts';
 import GlucoseLogTable from '@/components/glucose-log/table';
@@ -16,10 +17,11 @@ interface Props {
 }
 
 export default async function UserPage({ params, searchParams }: Props) {
+  const loggedInUser = (await auth())?.user;
   const slug = (await params).slug;
   const mode = (await searchParams).mode || 'table';
-  const user = await getUserBySlugWithGlucoseLogs(slug);
-  const glucoseLogs = user?.glucoseLogs;
+  const dbUser = await getUserBySlugWithGlucoseLogs(slug);
+  const glucoseLogs = dbUser?.glucoseLogs;
 
   if (!glucoseLogs) {
     return notFound();
@@ -31,7 +33,7 @@ export default async function UserPage({ params, searchParams }: Props) {
         <h1 className="text-lg">
           Histórico de medições de{' '}
           <span className="font-semibold capitalize">
-            {user.name?.split(' ')[0]}
+            {dbUser.name?.split(' ')[0]}
           </span>
         </h1>
         <SocialShareButton url={`https://glicemia.vercel.app/user/${slug}`} />
@@ -63,9 +65,17 @@ export default async function UserPage({ params, searchParams }: Props) {
           {mode === 'chart' && <GlucoseLogsCharts glucoseLogs={glucoseLogs} />}
         </div>
       ) : (
-        <p className="text-muted-foreground py-20 text-center">
-          Nenhuma medição encontrada
-        </p>
+        <div className="text-muted-foreground flex flex-col items-center gap-10 py-20 text-center">
+          <span>Nenhuma registro encontrado.</span>
+          {loggedInUser?.slug === slug && (
+            <div>
+              Faça sua primeira
+              <Button asChild className="w-fit px-1 text-base" variant={'link'}>
+                <Link href={'/logs'}>Medição</Link>
+              </Button>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
