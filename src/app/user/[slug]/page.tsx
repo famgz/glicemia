@@ -57,10 +57,16 @@ export default async function UserPage({ params, searchParams }: Props) {
           </Link>
         </Button>
       </div>
-      <div>
-        {mode === 'table' && <GlucoseLogTable glucoseLogs={glucoseLogs} />}
-        {mode === 'chart' && <GlucoseLogsCharts glucoseLogs={glucoseLogs} />}
-      </div>
+      {glucoseLogs?.length > 0 ? (
+        <div>
+          {mode === 'table' && <GlucoseLogTable glucoseLogs={glucoseLogs} />}
+          {mode === 'chart' && <GlucoseLogsCharts glucoseLogs={glucoseLogs} />}
+        </div>
+      ) : (
+        <p className="text-muted-foreground py-20 text-center">
+          Nenhuma medição encontrada
+        </p>
+      )}
     </div>
   );
 }

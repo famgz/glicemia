@@ -33,12 +33,6 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
   const today = formatDate(new Date(), 'full-date', timeZone);
   const yesterday = formatDate(subDays(new Date(), 1), 'full-date', timeZone);
 
-  if (glucoseLogs.length === 0) {
-    return (
-      <p className="text-muted-foreground py-20">Nenhuma medição encontrada</p>
-    );
-  }
-
   return (
     <div className="mt-5 space-y-5">
       {Object.entries(glucoseLogsByDay).map(([day, logs]) => (
