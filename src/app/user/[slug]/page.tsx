@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getUserBySlugWithGlucoseLogs } from '@/actions/user';
+import { SocialShareButton } from '@/components/buttons/social-share';
 import GlucoseLogsCharts from '@/components/glucose-log/charts';
 import GlucoseLogTable from '@/components/glucose-log/table';
 import { Button } from '@/components/ui/button';
@@ -33,26 +34,28 @@ export default async function UserPage({ params, searchParams }: Props) {
             {user.name?.split(' ')[0]}
           </span>
         </h1>
-        <div className="flex items-center justify-end gap-2">
-          <Button asChild variant={mode === 'table' ? 'default' : 'outline'}>
-            <Link
-              href={`/user/${slug}?mode=table`}
-              className="flex items-center gap-2"
-            >
-              <span className="max-sm:hidden">Tabela</span>
-              <TableOfContentsIcon />
-            </Link>
-          </Button>
-          <Button asChild variant={mode === 'chart' ? 'default' : 'outline'}>
-            <Link
-              href={`/user/${slug}?mode=chart`}
-              className="flex items-center gap-2"
-            >
-              <span className="max-sm:hidden">Gráfico</span>
-              <ChartColumnDecreasingIcon />
-            </Link>
-          </Button>
-        </div>
+        <SocialShareButton url={`https://glicemia.vercel.app/user/${slug}`} />
+      </div>
+
+      <div className="flex items-center justify-end gap-2">
+        <Button asChild variant={mode === 'table' ? 'default' : 'outline'}>
+          <Link
+            href={`/user/${slug}?mode=table`}
+            className="flex items-center gap-2"
+          >
+            <span className="max-[250px]:hidden">Tabela</span>
+            <TableOfContentsIcon />
+          </Link>
+        </Button>
+        <Button asChild variant={mode === 'chart' ? 'default' : 'outline'}>
+          <Link
+            href={`/user/${slug}?mode=chart`}
+            className="flex items-center gap-2"
+          >
+            <span className="max-[250px]:hidden">Gráfico</span>
+            <ChartColumnDecreasingIcon />
+          </Link>
+        </Button>
       </div>
       <div>
         {mode === 'table' && <GlucoseLogTable glucoseLogs={glucoseLogs} />}

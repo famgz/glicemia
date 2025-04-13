@@ -77,3 +77,8 @@ to-dos
 ## Debug
 
 `npm install -g win-node-env`
+
+
+## Share
+
+`npm install react-share`

@@ -44,7 +44,8 @@ const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const description = 'Gráficos de medições';
 
-const DAYS_RANGES = [7, 15, 30, 60, 90, 180];
+const DAYS_RANGES = [7, 15, 30, 60, 90, 180] as const;
+const DEFAULT_DAYS_RANGE = 15;
 
 interface Props {
   glucoseLogs: GlucoseLog[];
@@ -53,7 +54,7 @@ interface Props {
 export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const [chartWidth, setChartWidth] = useState(0);
-  const [daysRange, setDayRange] = useState(DAYS_RANGES[0]);
+  const [daysRange, setDayRange] = useState(DEFAULT_DAYS_RANGE);
   const croppedGlucoseLogs = useMemo(() => {
     const newestLog = glucoseLogs.reduce((newest, curr) =>
       curr.date > newest.date ? curr : newest
@@ -166,6 +167,7 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
         <Select
           value={String(daysRange)}
           onValueChange={(value) => setDayRange(Number(value))}
+          defaultValue={String(DEFAULT_DAYS_RANGE)}
         >
           <SelectTrigger className="w-[110px]">
             <SelectValue placeholder="Dias" />
