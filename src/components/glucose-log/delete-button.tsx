@@ -49,6 +49,7 @@ export default function DeleteGlucoseLogButton({
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button variant={'outline'}>
+          <span className="max-[300px]:hidden">Remover</span>
           <Trash2Icon />
         </Button>
       </AlertDialogTrigger>
@@ -62,7 +63,7 @@ export default function DeleteGlucoseLogButton({
         <div className="flex w-full justify-between py-5">
           <GlucoseLogDate glucoseLog={glucoseLog} />
           <GlucoseLogValue glucoseLog={glucoseLog} />
-          <GlucoseLogMealTypeBadge glucoseLog={glucoseLog} />
+          <GlucoseLogMealTypeBadge mealType={glucoseLog.mealType} />
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>

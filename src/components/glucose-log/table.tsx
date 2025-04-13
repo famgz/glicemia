@@ -68,7 +68,7 @@ export default async function GlucoseLogTable({ glucoseLogs }: Props) {
                       {formatDate(log.date, 'hour-minute', timeZone)}
                     </TableCell>
                     <TableCell align="center">
-                      <GlucoseLogMealTypeBadge glucoseLog={log} />
+                      <GlucoseLogMealTypeBadge mealType={log.mealType} />
                     </TableCell>
                     <TableCell
                       align="center"

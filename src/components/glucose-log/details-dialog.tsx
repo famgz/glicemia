@@ -37,7 +37,7 @@ export default function GlucoseLogDetailsDialog({
         <div className="flex flex-col gap-3">
           <div className="flex w-full items-center justify-between">
             <GlucoseLogDate glucoseLog={glucoseLog} />
-            <GlucoseLogMealTypeBadge glucoseLog={glucoseLog} />
+            <GlucoseLogMealTypeBadge mealType={glucoseLog.mealType} />
           </div>
           <div className="flex w-full justify-center">
             <GlucoseLogValue glucoseLog={glucoseLog} />

@@ -14,6 +14,7 @@ export default function EditGlucoseLogButton({ glucoseLog }: Props) {
   return (
     <UpsertGlucoseLogDialog glucoseLog={glucoseLog}>
       <Button variant={'outline'}>
+        <span className="max-[300px]:hidden">Editar</span>
         <SquarePenIcon />
       </Button>
     </UpsertGlucoseLogDialog>

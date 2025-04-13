@@ -1,18 +1,18 @@
-import { GlucoseLog } from '@prisma/client';
+import { MealType } from '@prisma/client';
 
 import { glucoseLogMap } from '@/constants/glucose-log';
 import { cn } from '@/lib/utils';
 
 interface Props {
-  glucoseLog: GlucoseLog;
+  mealType: MealType;
   className?: string;
 }
 
 export default function GlucoseLogMealTypeBadge({
-  glucoseLog,
+  mealType,
   className,
 }: Props) {
-  const glucoseLogMapItem = glucoseLogMap[glucoseLog.mealType];
+  const glucoseLogMapItem = glucoseLogMap[mealType];
   return (
     <div
       className={cn(

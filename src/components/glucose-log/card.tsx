@@ -31,7 +31,7 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
         <CardTitle>
           <div className="flex items-start justify-between">
             <GlucoseLogDate glucoseLog={glucoseLog} />
-            <GlucoseLogMealTypeBadge glucoseLog={glucoseLog} />
+            <GlucoseLogMealTypeBadge mealType={glucoseLog.mealType} />
           </div>
         </CardTitle>
       </CardHeader>

@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { getGlucoseLogsByLocalDay, upsertGlucoseLog } from '@/actions/glucose';
+import { MealTypesLimitsInfo } from '@/components/buttons/meal-types-limits-info';
 import DateTimePicker24h from '@/components/date-time-picker';
 import { Button } from '@/components/ui/button';
 import {
@@ -122,12 +123,17 @@ export function UpsertGlucoseLogForm({
               <FormItem>
                 <FormLabel>Valor</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    type="number"
-                    className="!text-sm placeholder:!text-sm md:!text-sm"
-                    placeholder="Digite o valor da medição"
-                  />
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      type="number"
+                      className="!text-sm placeholder:!text-sm md:!text-sm"
+                      placeholder="Digite o valor da medição"
+                    />
+                    <div className="flex-center bg-background absolute top-1/2 right-2 -translate-y-1/2 transform">
+                      <MealTypesLimitsInfo />
+                    </div>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
