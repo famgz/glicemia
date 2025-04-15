@@ -28,15 +28,17 @@ export default async function UserPage({ params, searchParams }: Props) {
   }
 
   return (
-    <div className="container space-y-6">
-      <div className="flex items-start justify-between gap-5">
+    <div className="container space-y-4">
+      <div className="flex flex-wrap items-start justify-between gap-x-5 gap-y-2">
         <h1 className="text-lg">
           Histórico de medições de{' '}
           <span className="font-semibold capitalize">
             {dbUser.name?.split(' ')[0]}
           </span>
         </h1>
-        <SocialShareButton url={`https://glicemia.vercel.app/user/${slug}`} />
+        <div className="flex flex-1 justify-end">
+          <SocialShareButton url={`https://glicemia.vercel.app/user/${slug}`} />
+        </div>
       </div>
 
       <div className="flex items-center justify-end gap-2">
