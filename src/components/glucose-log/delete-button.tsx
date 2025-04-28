@@ -62,7 +62,10 @@ export default function DeleteGlucoseLogButton({
         </AlertDialogHeader>
         <div className="flex w-full justify-between py-5">
           <GlucoseLogDate glucoseLog={glucoseLog} />
-          <GlucoseLogValue glucoseLog={glucoseLog} />
+          <GlucoseLogValue
+            mealType={glucoseLog.mealType}
+            value={glucoseLog.value}
+          />
           <GlucoseLogMealTypeBadge mealType={glucoseLog.mealType} />
         </div>
         <AlertDialogFooter>

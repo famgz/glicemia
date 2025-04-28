@@ -55,7 +55,10 @@ export default async function GlucoseLogList({ glucoseLogs }: Props) {
             </TableHeader>
             <TableBody>
               {logs.map((log) => {
-                const isAboveMax = isGlucoseLogAboveMax(log);
+                const isAboveMax = isGlucoseLogAboveMax(
+                  log.mealType,
+                  log.value
+                );
                 return (
                   <TableRow
                     key={log.id}
@@ -79,7 +82,8 @@ export default async function GlucoseLogList({ glucoseLogs }: Props) {
                     <TableCell align="center">
                       <div className="pr-8">
                         <GlucoseLogValue
-                          glucoseLog={log}
+                          mealType={log.mealType}
+                          value={log.value}
                           className="text-base"
                         />
                       </div>

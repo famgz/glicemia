@@ -2,6 +2,7 @@
 
 import {
   ChartColumnDecreasingIcon,
+  Grid3x3Icon,
   LucideIcon,
   TableOfContentsIcon,
 } from 'lucide-react';
@@ -13,17 +14,21 @@ import { auth } from '@/auth';
 import { SocialShareButton } from '@/components/buttons/social-share';
 import GlucoseLogsCharts from '@/components/glucose-log/charts';
 import GlucoseLogList from '@/components/glucose-log/list';
+import GlucoseLogTable from '@/components/glucose-log/table';
 import { Button } from '@/components/ui/button';
 
-type DisplayType = 'list' | 'chart';
+type DisplayType = 'list' | 'table' | 'chart';
 
 const displayTypesMap: Record<
   DisplayType,
   { label: string; Icon: LucideIcon }
 > = {
+  table: { label: 'Tabela', Icon: Grid3x3Icon },
   list: { label: 'Lista', Icon: TableOfContentsIcon },
   chart: { label: 'Gráfico', Icon: ChartColumnDecreasingIcon },
 };
+
+const DEFAULT_DISPLAY_TYPE = 'table';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -33,7 +38,7 @@ interface Props {
 export default async function UserPage({ params, searchParams }: Props) {
   const loggedInUser = (await auth())?.user;
   const slug = (await params).slug;
-  const mode = (await searchParams).mode || 'list';
+  const mode = (await searchParams).mode || DEFAULT_DISPLAY_TYPE;
   const dbUser = await getUserBySlugWithGlucoseLogs(slug);
   const glucoseLogs = dbUser?.glucoseLogs;
 
@@ -50,11 +55,11 @@ export default async function UserPage({ params, searchParams }: Props) {
             {dbUser.name?.split(' ')[0]}
           </span>
         </h1>
-        <div className="flex flex-1 justify-end">
+        <div className="flex flex-1 justify-end print:hidden">
           <SocialShareButton url={`https://glicemia.vercel.app/user/${slug}`} />
         </div>
       </div>
-      <div className="flex items-center justify-end gap-2">
+      <div className="flex items-center justify-end gap-2 print:hidden">
         {Object.entries(displayTypesMap).map(([key, { label, Icon }]) => (
           <Button
             asChild
@@ -74,6 +79,7 @@ export default async function UserPage({ params, searchParams }: Props) {
       {glucoseLogs?.length > 0 ? (
         <div>
           {mode === 'list' && <GlucoseLogList glucoseLogs={glucoseLogs} />}
+          {mode === 'table' && <GlucoseLogTable glucoseLogs={glucoseLogs} />}
           {mode === 'chart' && <GlucoseLogsCharts glucoseLogs={glucoseLogs} />}
         </div>
       ) : (

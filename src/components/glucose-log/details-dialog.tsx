@@ -40,7 +40,10 @@ export default function GlucoseLogDetailsDialog({
             <GlucoseLogMealTypeBadge mealType={glucoseLog.mealType} />
           </div>
           <div className="flex w-full justify-center">
-            <GlucoseLogValue glucoseLog={glucoseLog} />
+            <GlucoseLogValue
+              mealType={glucoseLog.mealType}
+              value={glucoseLog.value}
+            />
           </div>
           <div>
             <p className="text-foreground">Notas</p>

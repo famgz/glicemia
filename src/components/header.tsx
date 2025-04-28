@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 export default async function Header() {
   return (
-    <header>
+    <header className="print:hidden">
       <Card className="rounded-t-none py-3">
         <CardContent className="container flex items-center justify-between py-1">
           <div className="flex items-center sm:gap-3">

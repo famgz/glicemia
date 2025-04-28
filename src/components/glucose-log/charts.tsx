@@ -37,7 +37,10 @@ import {
 } from '@/components/ui/select';
 import { glucoseLogMap } from '@/constants/glucose-log';
 import { cn } from '@/lib/utils';
-import { groupGlucoseLogsByDayAndMealType } from '@/utils/glucose-log';
+import {
+  getUniqueMealTypes,
+  groupGlucoseLogsByDayAndMealType,
+} from '@/utils/glucose-log';
 import { formatDate } from '@/utils/time';
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -76,14 +79,10 @@ export default function GlucoseLogsCharts({ glucoseLogs }: Props) {
     return res;
   }, [croppedGlucoseLogs]);
 
-  const mealTypes = useMemo(() => {
-    const loggedMealTypes = Array.from(
-      new Set(croppedGlucoseLogs.map((x) => x.mealType))
-    );
-    return Object.keys(glucoseLogMap).filter((key) =>
-      loggedMealTypes.includes(key as MealType)
-    );
-  }, [croppedGlucoseLogs]);
+  const mealTypes = useMemo(
+    () => getUniqueMealTypes(croppedGlucoseLogs),
+    [croppedGlucoseLogs]
+  );
 
   const chartConfig = useMemo(
     () =>

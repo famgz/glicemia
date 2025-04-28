@@ -1,15 +1,22 @@
-import { GlucoseLog } from '@prisma/client';
+import { MealType } from '@prisma/client';
 
 import { cn } from '@/lib/utils';
 import { isGlucoseLogAboveMax } from '@/utils/glucose-log';
 
 interface Props {
-  glucoseLog: GlucoseLog;
+  mealType: MealType;
+  value: number;
   className?: string;
+  showSuffix?: boolean;
 }
 
-export default function GlucoseLogValue({ glucoseLog, className }: Props) {
-  const isAboveMax = isGlucoseLogAboveMax(glucoseLog);
+export default function GlucoseLogValue({
+  mealType,
+  value,
+  className,
+  showSuffix = true,
+}: Props) {
+  const isAboveMax = isGlucoseLogAboveMax(mealType, value);
 
   return (
     <div
@@ -17,12 +24,12 @@ export default function GlucoseLogValue({ glucoseLog, className }: Props) {
         'text-destructive/70': isAboveMax,
       })}
     >
-      <span className={cn('text-4xl font-bold', className)}>
-        {glucoseLog.value}
-      </span>
-      <span className="absolute right-0 bottom-1 translate-x-[100%] text-[10px]">
-        mg/dL
-      </span>
+      <span className={cn('text-4xl font-bold', className)}>{value}</span>
+      {showSuffix && (
+        <span className="absolute right-0 bottom-1 translate-x-[100%] text-[10px]">
+          mg/dL
+        </span>
+      )}
     </div>
   );
 }

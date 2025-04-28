@@ -29,10 +29,12 @@ export function formatDate(
 
 export function getWeekDayFromShortDate(shortDate: string) {
   const [day, month, year] = shortDate.split('/');
-  let weekDay = formatDate(
-    new Date(`${year}/${month}/${day}`),
-    'weekday',
-  );
+  let weekDay = formatDate(new Date(`${year}/${month}/${day}`), 'weekday');
   weekDay = `${weekDay[0].toUpperCase()}${weekDay.slice(1)}`;
   return weekDay;
+}
+
+export function invertDateString(invertedDate: string) {
+  const [year, month, day] = invertedDate.split('/');
+  return `${day}/${month}/${year}`;
 }

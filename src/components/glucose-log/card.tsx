@@ -15,7 +15,10 @@ interface Props {
 }
 
 export default function GlucoseLogCard({ glucoseLog }: Props) {
-  const isAboveMax = isGlucoseLogAboveMax(glucoseLog);
+  const isAboveMax = isGlucoseLogAboveMax(
+    glucoseLog.mealType,
+    glucoseLog.value
+  );
 
   return (
     <Card
@@ -36,7 +39,10 @@ export default function GlucoseLogCard({ glucoseLog }: Props) {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex items-end justify-between px-4">
-        <GlucoseLogValue glucoseLog={glucoseLog} />
+        <GlucoseLogValue
+          mealType={glucoseLog.mealType}
+          value={glucoseLog.value}
+        />
         {glucoseLog.notes && (
           <AlignLeftIcon className="text-muted-foreground/70" />
         )}

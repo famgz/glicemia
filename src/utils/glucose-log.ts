@@ -53,8 +53,8 @@ export function groupGlucoseLogsByDayAndMealType({
   const filledEntries: GlucoseLogEntry[] = [];
   let firstDate = new Date(entries[0].date);
   const lastDate = new Date(entries[entries.length - 1].date);
-  const minFirstDate = subDays(lastDate, MIN_DAYS_RANGE - 1)
-  firstDate = firstDate < minFirstDate ? firstDate : minFirstDate
+  const minFirstDate = subDays(lastDate, MIN_DAYS_RANGE - 1);
+  firstDate = firstDate < minFirstDate ? firstDate : minFirstDate;
   let currentIndex = 0;
   for (
     let currentDay = new Date(firstDate);
@@ -72,7 +72,16 @@ export function groupGlucoseLogsByDayAndMealType({
   return filledEntries;
 }
 
-export function isGlucoseLogAboveMax(glucoseLog: GlucoseLog) {
-  const glucoseLogMapItem = glucoseLogMap[glucoseLog.mealType];
-  return glucoseLog.value > glucoseLogMapItem.maxValue;
+export function isGlucoseLogAboveMax(mealType: MealType, value: number) {
+  const glucoseLogMapItem = glucoseLogMap[mealType];
+  return value > glucoseLogMapItem.maxValue;
+}
+
+export function getUniqueMealTypes(glucoseLogs: GlucoseLog[]) {
+  const loggedMealTypes = Array.from(
+    new Set(glucoseLogs.map((x) => x.mealType))
+  );
+  return Object.keys(glucoseLogMap).filter((key) =>
+    loggedMealTypes.includes(key as MealType)
+  ) as MealType[];
 }
