@@ -1,6 +1,10 @@
 'use server';
 
-import { ChartColumnDecreasingIcon, TableOfContentsIcon } from 'lucide-react';
+import {
+  ChartColumnDecreasingIcon,
+  LucideIcon,
+  TableOfContentsIcon,
+} from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -8,18 +12,28 @@ import { getUserBySlugWithGlucoseLogs } from '@/actions/user';
 import { auth } from '@/auth';
 import { SocialShareButton } from '@/components/buttons/social-share';
 import GlucoseLogsCharts from '@/components/glucose-log/charts';
-import GlucoseLogTable from '@/components/glucose-log/table';
+import GlucoseLogList from '@/components/glucose-log/list';
 import { Button } from '@/components/ui/button';
+
+type DisplayType = 'list' | 'chart';
+
+const displayTypesMap: Record<
+  DisplayType,
+  { label: string; Icon: LucideIcon }
+> = {
+  list: { label: 'Lista', Icon: TableOfContentsIcon },
+  chart: { label: 'Gráfico', Icon: ChartColumnDecreasingIcon },
+};
 
 interface Props {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ mode: 'table' | 'chart' }>;
+  searchParams: Promise<{ mode: DisplayType }>;
 }
 
 export default async function UserPage({ params, searchParams }: Props) {
   const loggedInUser = (await auth())?.user;
   const slug = (await params).slug;
-  const mode = (await searchParams).mode || 'table';
+  const mode = (await searchParams).mode || 'list';
   const dbUser = await getUserBySlugWithGlucoseLogs(slug);
   const glucoseLogs = dbUser?.glucoseLogs;
 
@@ -40,30 +54,26 @@ export default async function UserPage({ params, searchParams }: Props) {
           <SocialShareButton url={`https://glicemia.vercel.app/user/${slug}`} />
         </div>
       </div>
-
       <div className="flex items-center justify-end gap-2">
-        <Button asChild variant={mode === 'table' ? 'default' : 'outline'}>
-          <Link
-            href={`/user/${slug}?mode=table`}
-            className="flex items-center gap-2"
+        {Object.entries(displayTypesMap).map(([key, { label, Icon }]) => (
+          <Button
+            asChild
+            variant={mode === key ? 'default' : 'outline'}
+            key={key}
           >
-            <span className="max-[250px]:hidden">Tabela</span>
-            <TableOfContentsIcon />
-          </Link>
-        </Button>
-        <Button asChild variant={mode === 'chart' ? 'default' : 'outline'}>
-          <Link
-            href={`/user/${slug}?mode=chart`}
-            className="flex items-center gap-2"
-          >
-            <span className="max-[250px]:hidden">Gráfico</span>
-            <ChartColumnDecreasingIcon />
-          </Link>
-        </Button>
+            <Link
+              href={`/user/${slug}?mode=${key}`}
+              className="flex items-center gap-2"
+            >
+              <span className="max-[250px]:hidden">{label}</span>
+              <Icon />
+            </Link>
+          </Button>
+        ))}
       </div>
       {glucoseLogs?.length > 0 ? (
         <div>
-          {mode === 'table' && <GlucoseLogTable glucoseLogs={glucoseLogs} />}
+          {mode === 'list' && <GlucoseLogList glucoseLogs={glucoseLogs} />}
           {mode === 'chart' && <GlucoseLogsCharts glucoseLogs={glucoseLogs} />}
         </div>
       ) : (

@@ -27,7 +27,7 @@ interface Props {
   glucoseLogs: GlucoseLog[];
 }
 
-export default async function GlucoseLogTable({ glucoseLogs }: Props) {
+export default async function GlucoseLogList({ glucoseLogs }: Props) {
   const timeZone = (await cookies()).get(COOKIES_TIMEZONE_STRING)?.value;
   const glucoseLogsByDay = groupGlucoseLogsByDay(glucoseLogs || [], timeZone);
   const today = formatDate(new Date(), 'full-date', timeZone);
