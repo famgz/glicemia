@@ -22,7 +22,7 @@ export function groupGlucoseLogsByDay(
   return glucoseLogsSortedByDay;
 }
 
-const MIN_DAYS_RANGE = 7;
+const MIN_DAYS_RANGE = 15;
 
 type GlucoseLogEntry = { date: string } & Partial<Record<MealType, number>>;
 
