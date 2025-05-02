@@ -1,5 +1,7 @@
 import { MealType } from '@prisma/client';
 
+export const MAX_LOGS_ABOVE_MAX_RATIO = 0.3;
+
 const MAX_VALUE_FASTING = 95;
 const MAX_VALUE_PRE_MEAL = 100;
 const MAX_VALUE_POST_MEAL = 140;

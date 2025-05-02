@@ -1,0 +1,26 @@
+import { GlucoseLog, MealType } from '@prisma/client';
+
+import { getGlucoseLogs } from '@/actions/glucose';
+import PieCharts from '@/app/reports/components/pie-charts';
+import { groupGlucoseLogsByMealTypes } from '@/utils/glucose-log';
+
+export default async function ReportsPage() {
+  const glucoseLogs = await getGlucoseLogs();
+
+  if (!glucoseLogs) {
+    return <p>Nenhum registro encontrado</p>;
+  }
+
+  const byMealType = groupGlucoseLogsByMealTypes({ glucoseLogs });
+  const totals: Partial<Record<MealType | 'TOTAL', GlucoseLog[]>> = {
+    TOTAL: glucoseLogs,
+    ...byMealType,
+  };
+
+  return (
+    <div className="expanded container gap-8">
+      <h1 className="text-xl font-semibold">Relatórios</h1>
+      <PieCharts totals={totals} />
+    </div>
+  );
+}

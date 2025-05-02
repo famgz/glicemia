@@ -85,7 +85,7 @@ export default async function Menu() {
             </DropdownMenuItem>
 
             <DropdownMenuItem asChild>
-              <Link href={'/logs'} className="flex w-full items-center gap-2">
+              <Link href={'/reports'} className="flex w-full items-center gap-2">
                 <BookMarkedIcon className="size-4" />
                 Relatórios
               </Link>

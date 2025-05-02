@@ -72,6 +72,23 @@ export function groupGlucoseLogsByDayAndMealType({
   return filledEntries;
 }
 
+export function groupGlucoseLogsByMealTypes({
+  glucoseLogs,
+}: {
+  glucoseLogs: GlucoseLog[];
+}) {
+  const byMealType = Object.groupBy(glucoseLogs, (log) => log.mealType);
+  const sortedKeys: Partial<Record<MealType, GlucoseLog[]>> = {};
+  Object.keys(glucoseLogMap).forEach((key) => {
+    const item = byMealType[key as MealType];
+    if (!item) {
+      return;
+    }
+    sortedKeys[key as MealType] = item;
+  });
+  return sortedKeys;
+}
+
 export function isGlucoseLogAboveMax(mealType: MealType, value: number) {
   const glucoseLogMapItem = glucoseLogMap[mealType];
   return value > glucoseLogMapItem.maxValue;
@@ -81,6 +98,7 @@ export function getUniqueMealTypes(glucoseLogs: GlucoseLog[]) {
   const loggedMealTypes = Array.from(
     new Set(glucoseLogs.map((x) => x.mealType))
   );
+  // sort by meal type order
   return Object.keys(glucoseLogMap).filter((key) =>
     loggedMealTypes.includes(key as MealType)
   ) as MealType[];

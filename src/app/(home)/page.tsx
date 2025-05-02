@@ -49,7 +49,7 @@ export default async function Home() {
             height={350}
             priority
             className="max-md:size-[300px]"
-            alt="Aparelho medidor de glicemia ao lado de um dedo"
+            alt="Aparelho medidor de glicemia ao lado de uma gota de sangue"
           />
         </div>
       </div>
