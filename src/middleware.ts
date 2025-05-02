@@ -3,10 +3,10 @@ import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { COOKIES_TIMEZONE_STRING, DEFAULT_TIMEZONE } from '@/constants/time';
 
-const protectedRoutes = ['/logs', '/profile'];
+const publicRoutes = ['/', '/user', '/login'];
 
-function isRouteProtected(pathname: string) {
-  return protectedRoutes.some(
+function isPublicRoute(pathname: string) {
+  return publicRoutes.some(
     (protectedRoute) =>
       pathname === protectedRoute || pathname.startsWith(`${protectedRoute}/`)
   );
@@ -22,11 +22,11 @@ export default auth((req) => {
 
   // redirect if already logged in
   if (user && pathname.startsWith('/login')) {
-    return NextResponse.redirect(new URL('/user', req.nextUrl.origin));
+    return NextResponse.redirect(new URL('/logs', req.nextUrl.origin));
   }
 
   // redirect if not logged in
-  if (!user && isRouteProtected(pathname)) {
+  if (!user && !isPublicRoute(pathname)) {
     const loginUrl = new URL('/login', req.nextUrl.origin);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
