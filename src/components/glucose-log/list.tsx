@@ -1,8 +1,9 @@
-'use server';
+'use client';
 
 import { GlucoseLog } from '@prisma/client';
 import { subDays } from 'date-fns';
-import { cookies } from 'next/headers';
+import { useEffect, useMemo, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import GlucoseLogMealTypeBadge from '@/components/glucose-log/meal-type-badge';
 import { GlucoseLogNotesPopover } from '@/components/glucose-log/notes-popover';
@@ -15,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { COOKIES_TIMEZONE_STRING } from '@/constants/time';
 import { cn } from '@/lib/utils';
 import {
   groupGlucoseLogsByDay,
@@ -27,15 +27,36 @@ interface Props {
   glucoseLogs: GlucoseLog[];
 }
 
-export default async function GlucoseLogList({ glucoseLogs }: Props) {
-  const timeZone = (await cookies()).get(COOKIES_TIMEZONE_STRING)?.value;
+const ITEMS_PER_LOAD = 10;
+
+export default function GlucoseLogList({ glucoseLogs }: Props) {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const glucoseLogsByDay = groupGlucoseLogsByDay(glucoseLogs || [], timeZone);
   const today = formatDate(new Date(), 'full-date', timeZone);
   const yesterday = formatDate(subDays(new Date(), 1), 'full-date', timeZone);
 
+  const [scrollTriggerRef, inView] = useInView({ delay: 500 });
+  const [offset, setOffset] = useState(ITEMS_PER_LOAD);
+
+  const hasMoreItems = useMemo(
+    () => Object.keys(glucoseLogsByDay).length > offset,
+    [glucoseLogsByDay, offset]
+  );
+
+  const croppedItems = useMemo(
+    () => Object.entries(glucoseLogsByDay).slice(0, offset),
+    [glucoseLogsByDay, offset]
+  );
+
+  useEffect(() => {
+    if (inView && hasMoreItems) {
+      setOffset((prev) => prev + ITEMS_PER_LOAD);
+    }
+  }, [inView, hasMoreItems]);
+
   return (
     <div className="mt-5 space-y-5">
-      {Object.entries(glucoseLogsByDay).map(([day, logs]) => (
+      {croppedItems.map(([day, logs]) => (
         <div key={day}>
           <p className="text-background from-muted-foreground/50 to-muted-foreground/0 w-full rounded-sm bg-linear-to-r px-3 py-1 text-sm font-semibold">
             {(day === today && 'Hoje') || (day === yesterday && 'Ontem') || day}
@@ -95,6 +116,9 @@ export default async function GlucoseLogList({ glucoseLogs }: Props) {
           </Table>
         </div>
       ))}
+      <div className="text-muted-foreground flex-center w-full py-4">
+        {hasMoreItems && <div ref={scrollTriggerRef}>Carregando...</div>}
+      </div>
     </div>
   );
 }
