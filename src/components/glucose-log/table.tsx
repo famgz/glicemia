@@ -39,9 +39,6 @@ export default function GlucoseLogTable({ glucoseLogs }: Props) {
 
   return (
     <div className="mt-5 space-y-3">
-      <p className="text-muted-foreground text-right text-sm">
-        {glucoseLogs.length} medições encontradas
-      </p>
       <Table>
         <TableHeader>
           <TableRow>

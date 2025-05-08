@@ -38,7 +38,12 @@ export default async function UserPage({ params }: Props) {
       </div>
 
       {glucoseLogs?.length > 0 ? (
-        <ContentWrapper glucoseLogs={glucoseLogs} />
+        <>
+          <p className="text-muted-foreground text-right text-xs">
+            Total de {glucoseLogs.length} medições
+          </p>
+          <ContentWrapper glucoseLogs={glucoseLogs} />
+        </>
       ) : (
         <div className="text-muted-foreground flex flex-col items-center gap-10 py-20 text-center">
           <span>Nenhuma registro encontrado.</span>
