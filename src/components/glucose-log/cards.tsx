@@ -26,7 +26,7 @@ export default async function GlucoseLogCards({ glucoseLogs }: Props) {
 
   return (
     <div className="mt-6 space-y-8">
-      {Object.entries(glucoseLogsByDay).map(([day, logs]) => (
+      {glucoseLogsByDay.map(([day, logs]) => (
         <div key={day} className="space-y-2">
           <h2 className="font-bold">
             {(day === today && 'Hoje') || (day === yesterday && 'Ontem') || day}

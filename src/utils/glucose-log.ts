@@ -19,7 +19,7 @@ export function groupGlucoseLogsByDay(
       return a.date.getTime() - b.date.getTime();
     });
   });
-  return glucoseLogsSortedByDay;
+  return Object.entries(glucoseLogsSortedByDay);
 }
 
 const MIN_DAYS_RANGE = 15;
