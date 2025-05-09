@@ -2,7 +2,7 @@
 
 import { GlucoseLog, MealType } from '@prisma/client';
 
-import { GlucoseLogPieChart } from '@/components/pi-chart';
+import { GlucoseLogPieChart } from '@/components/pie-chart';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   glucoseLogMap,
