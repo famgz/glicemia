@@ -41,16 +41,16 @@ interface Props {
 
 export function SocialShareButton({ url }: Props) {
   const [open, setIsOpen] = useState(false);
-  const [isCopyed, setIsCopyed] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
 
   function handleOpen() {
-    setIsCopyed(false);
+    setIsCopied(false);
     setIsOpen((prev) => !prev);
   }
 
   async function handleCopyUrl() {
     await navigator.clipboard.writeText(url);
-    setIsCopyed(true);
+    setIsCopied(true);
   }
 
   return (
@@ -87,8 +87,8 @@ export function SocialShareButton({ url }: Props) {
             aria-label="Copy link to clipboard"
             onClick={handleCopyUrl}
           >
-            <span>{isCopyed ? 'Copiado!' : 'Copiar'}</span>
-            {!isCopyed && <CopyIcon />}
+            <span>{isCopied ? 'Copiado!' : 'Copiar'}</span>
+            {!isCopied && <CopyIcon />}
           </Button>
         </div>
         <ShareButtons url={url} />
