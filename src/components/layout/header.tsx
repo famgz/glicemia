@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import Logo from '@/components/icons/logo';
 import LogoFull from '@/components/icons/logo-full';
-import Menu from '@/components/menu';
+import Menu from '@/components/layout/menu';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
