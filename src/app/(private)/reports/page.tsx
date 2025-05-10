@@ -2,8 +2,9 @@ import { GlucoseLog, MealType } from '@prisma/client';
 
 import { getSessionUserElseRedirectToLogin } from '@/actions/auth';
 import { getGlucoseLogs } from '@/actions/glucose';
-import PieCharts from '@/app/reports/components/pie-charts';
 import { groupGlucoseLogsByMealTypes } from '@/utils/glucose-log';
+
+import PieCharts from './components/pie-charts';
 
 export default async function ReportsPage() {
   await getSessionUserElseRedirectToLogin();

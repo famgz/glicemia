@@ -4,10 +4,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getUserBySlugWithGlucoseLogs } from '@/actions/user';
-import ContentWrapper from '@/app/user/[slug]/components/content-wrapper';
 import { auth } from '@/auth';
 import { SocialShareButton } from '@/components/buttons/social-share';
 import { Button } from '@/components/ui/button';
+
+import ContentWrapper from './components/content-wrapper';
 
 interface Props {
   params: Promise<{ slug: string }>;
