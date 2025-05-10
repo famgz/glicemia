@@ -31,9 +31,14 @@ export async function logout() {
   await signOut();
 }
 
-export async function getSessionUserElseRedirectToLogin(): Promise<SessionUser> {
+export async function getSessionUser() {
   const session = await auth();
   const user = session?.user;
+  return user;
+}
+
+export async function getSessionUserElseRedirectToLogin(): Promise<SessionUser> {
+  const user = await getSessionUser();
   if (!user) {
     return redirect('/login');
   }
@@ -41,8 +46,8 @@ export async function getSessionUserElseRedirectToLogin(): Promise<SessionUser> 
 }
 
 export async function getSessionUserIdElseThrow(): Promise<string> {
-  const session = await auth();
-  const userId = session?.user.id;
+  const user = await getSessionUser();
+  const userId = user?.id;
   if (!userId) {
     throw new Error('Not authenticated');
   }

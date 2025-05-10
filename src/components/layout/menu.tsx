@@ -1,5 +1,5 @@
 import {
-  BookMarkedIcon,
+  ChartPieIcon,
   DropletsIcon,
   GlobeIcon,
   HomeIcon,
@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-import { auth } from '@/auth';
+import { getSessionUser } from '@/actions/auth';
 import LogoutButton from '@/components/buttons/logout';
 import { ModeToggleButton } from '@/components/buttons/mode-toggle-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -24,8 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export default async function Menu() {
-  const session = await auth();
-  const user = session?.user;
+  const user = await getSessionUser();
 
   return (
     <DropdownMenu>
@@ -68,32 +67,35 @@ export default async function Menu() {
             <DropdownMenuSeparator />
 
             <DropdownMenuItem asChild>
+              <Link href={'/logs'} className="flex w-full items-center gap-2">
+                <DropletsIcon className="size-4" />
+                Nova medição
+              </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild>
               <Link
                 href={`/user/${user.slug}`}
                 className="flex w-full items-center gap-2"
               >
                 <GlobeIcon className="size-4" />
-                Perfil público
+                Histórico
               </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem asChild>
-              <Link href={'/logs'} className="flex w-full items-center gap-2">
-                <DropletsIcon className="size-4" />
-                Medições
-              </Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem asChild>
-              <Link href={'/reports'} className="flex w-full items-center gap-2">
-                <BookMarkedIcon className="size-4" />
+              <Link
+                href={'/reports'}
+                className="flex w-full items-center gap-2"
+              >
+                <ChartPieIcon className="size-4" />
                 Relatórios
               </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem asChild>
               <Link
-                href={'/profile'}
+                href={'/settings'}
                 className="flex w-full items-center gap-2"
               >
                 <SettingsIcon className="size-4" />
