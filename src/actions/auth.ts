@@ -1,17 +1,14 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import slugify from 'slugify';
 
 import { auth, signIn, signOut } from '@/auth';
 import { db } from '@/lib/prisma';
 import { SessionUser } from '@/types/auth';
+import { formatSlug } from '@/utils/slug';
 
 export async function generateSlugFromUsername(username: string) {
-  const baseSlug = slugify(username, { lower: true, trim: true })
-    .replace(/[^a-zA-Z0-9-]/g, '')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
+  const baseSlug = formatSlug(username);
   let slug = baseSlug;
   let counter = 1;
   while (await db.user.findUnique({ where: { slug } })) {
