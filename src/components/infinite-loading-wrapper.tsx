@@ -34,7 +34,7 @@ export default function InfiniteLoadingWrapper({
   return (
     <div>
       {children}
-      <div className="text-muted-foreground flex-center w-full py-4">
+      <div className="text-muted-foreground flex-center w-full py-4 print:hidden">
         {hasMoreItems && <div ref={scrollTriggerRef}>Carregando...</div>}
       </div>
     </div>
