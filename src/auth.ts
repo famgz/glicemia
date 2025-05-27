@@ -28,14 +28,12 @@ const options: NextAuthConfig = {
     async jwt({ token, user }) {
       if (user as SessionUser) {
         token.id = user.id;
-        token.slug = (user as SessionUser).slug;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id as string;
-        session.user.slug = token.slug as string;
       }
       return session;
     },

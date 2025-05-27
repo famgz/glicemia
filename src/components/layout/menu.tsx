@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-import { getSessionUser } from '@/actions/auth';
+import { getLoggedInDBUser } from '@/actions/user';
 import LogoutButton from '@/components/buttons/logout';
 import { ModeToggleButton } from '@/components/buttons/mode-toggle-button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 export default async function Menu() {
-  const user = await getSessionUser();
+  const user = await getLoggedInDBUser();
 
   return (
     <DropdownMenu>
@@ -80,6 +80,7 @@ export default async function Menu() {
               >
                 <GlobeIcon className="size-4" />
                 Histórico
+                {!user.privateHistory && ' (público)'}
               </Link>
             </DropdownMenuItem>
 

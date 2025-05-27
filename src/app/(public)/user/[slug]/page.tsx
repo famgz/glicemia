@@ -3,8 +3,10 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { getUserBySlugWithGlucoseLogs } from '@/actions/user';
-import { auth } from '@/auth';
+import {
+  getLoggedInDBUser,
+  getUserBySlugWithGlucoseLogs,
+} from '@/actions/user';
 import { SocialShareButton } from '@/components/buttons/social-share';
 import { Button } from '@/components/ui/button';
 
@@ -15,12 +17,19 @@ interface Props {
 }
 
 export default async function UserPage({ params }: Props) {
-  const loggedInUser = (await auth())?.user;
   const slug = (await params).slug;
-  const dbUser = await getUserBySlugWithGlucoseLogs(slug);
+  const [dbUser, loggedinUser] = await Promise.all([
+    getUserBySlugWithGlucoseLogs(slug),
+    getLoggedInDBUser(),
+  ]);
   const glucoseLogs = dbUser?.glucoseLogs;
+  const isLoggedInUser = loggedinUser?.slug === slug;
 
   if (!glucoseLogs) {
+    return notFound();
+  }
+
+  if (dbUser.privateHistory && !isLoggedInUser) {
     return notFound();
   }
 
@@ -48,10 +57,10 @@ export default async function UserPage({ params }: Props) {
       ) : (
         <div className="text-muted-foreground flex flex-col items-center gap-10 py-20 text-center">
           <span>Nenhuma registro encontrado.</span>
-          {loggedInUser?.slug === slug && (
+          {loggedinUser?.slug === slug && (
             <div>
               Faça sua primeira
-              <Button asChild className="w-fit px-1 text-base" variant={'link'}>
+              <Button className="w-fit px-1 text-base" variant={'link'} asChild>
                 <Link href={'/logs'}>Medição</Link>
               </Button>
             </div>

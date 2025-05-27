@@ -8,14 +8,15 @@ generator client {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  slug          String   @unique
-  accounts      Account[]
-  sessions      Session[]
+  id             String    @id @default(cuid())
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  slug           String    @unique
+  privateHistory Boolean   @default(false)
+  accounts       Account[]
+  sessions       Session[]
 
   glucoseLogs GlucoseLog[]
 
