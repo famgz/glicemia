@@ -2,7 +2,7 @@
 
 import { GlucoseLog } from '@prisma/client';
 import {
-  ChartColumnDecreasingIcon,
+  ChartNoAxesCombinedIcon,
   Grid3x3Icon,
   LucideIcon,
   TableOfContentsIcon,
@@ -22,7 +22,7 @@ const displayTypesMap: Record<
 > = {
   table: { label: 'Tabela', Icon: Grid3x3Icon },
   list: { label: 'Lista', Icon: TableOfContentsIcon },
-  chart: { label: 'Gráfico', Icon: ChartColumnDecreasingIcon },
+  chart: { label: 'Gráfico', Icon: ChartNoAxesCombinedIcon },
 };
 
 const DEFAULT_DISPLAY_MODE = 'table';
@@ -44,8 +44,8 @@ export default function ContentWrapper({ glucoseLogs }: Props) {
             className="flex items-center gap-2"
             onClick={() => setMode(key)}
           >
-            <span className="max-[250px]:hidden">{label}</span>
             <Icon />
+            <span className="max-[250px]:hidden">{label}</span>
           </Button>
         ))}
       </div>
