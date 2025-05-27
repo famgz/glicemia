@@ -57,6 +57,8 @@ to-dos
 
 `npx shadcn@latest add chart`
 
+`npx shadcn@latest add checkbox`
+
 
 ## Date
 
