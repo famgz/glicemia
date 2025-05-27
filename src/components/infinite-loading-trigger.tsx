@@ -1,10 +1,9 @@
 'use client';
 
-import { ReactNode, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 interface Props {
-  children: ReactNode;
   totalSize: number;
   offset: number;
   onChangeOffset: (offset: number) => void;
@@ -13,14 +12,13 @@ interface Props {
 
 const DEFAULT_ITEMS_PER_LOAD = 10;
 
-export default function InfiniteLoadingWrapper({
-  children,
+export default function InfiniteLoadingTrigger({
   totalSize,
   offset,
   onChangeOffset,
   perLoad = DEFAULT_ITEMS_PER_LOAD,
 }: Props) {
-  const [scrollTriggerRef, inView] = useInView({ delay: 500 });
+  const [scrollTriggerRef, inView] = useInView({ delay: 500, threshold: 1 });
 
   const hasMoreItems = useMemo(() => totalSize > offset, [totalSize, offset]);
 
@@ -32,11 +30,8 @@ export default function InfiniteLoadingWrapper({
   }, [inView, hasMoreItems]);
 
   return (
-    <div>
-      {children}
-      <div className="text-muted-foreground flex-center w-full py-4 print:hidden">
-        {hasMoreItems && <div ref={scrollTriggerRef}>Carregando...</div>}
-      </div>
+    <div className="text-muted-foreground flex-center w-full py-4 print:hidden">
+      {hasMoreItems && <div ref={scrollTriggerRef}>Carregando...</div>}
     </div>
   );
 }

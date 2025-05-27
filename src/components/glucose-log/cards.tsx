@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react';
 
 import GlucoseLogCard from '@/components/glucose-log/card';
 import GlucoseLogDetailsDialog from '@/components/glucose-log/details-dialog';
-import InfiniteLoadingWrapper from '@/components/infinite-loading-wrapper';
+import InfiniteLoadingTrigger from '@/components/infinite-loading-trigger';
 import { groupGlucoseLogsByDay } from '@/utils/glucose-log';
 import { formatDate, getWeekDayFromShortDate } from '@/utils/time';
 
@@ -34,34 +34,31 @@ export default function GlucoseLogCards({ glucoseLogs }: Props) {
   }
 
   return (
-    <InfiniteLoadingWrapper
-      offset={offset}
-      onChangeOffset={setOffset}
-      totalSize={glucoseLogsByDay.length}
-      perLoad={ITEMS_PER_LOAD}
-    >
-      <div className="mt-6 space-y-8">
-        {croppedItems.map(([day, logs]) => (
-          <div key={day} className="space-y-2">
-            <h2 className="font-bold">
-              {(day === today && 'Hoje') ||
-                (day === yesterday && 'Ontem') ||
-                day}
-              <span>
-                {', '}
-                {getWeekDayFromShortDate(day)}
-              </span>
-            </h2>
-            <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {logs.map((log) => (
-                <GlucoseLogDetailsDialog key={log.id} glucoseLog={log}>
-                  <GlucoseLogCard glucoseLog={log} />
-                </GlucoseLogDetailsDialog>
-              ))}
-            </div>
+    <div className="mt-6 space-y-8">
+      {croppedItems.map(([day, logs]) => (
+        <div key={day} className="space-y-2">
+          <h2 className="font-bold">
+            {(day === today && 'Hoje') || (day === yesterday && 'Ontem') || day}
+            <span>
+              {', '}
+              {getWeekDayFromShortDate(day)}
+            </span>
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {logs.map((log) => (
+              <GlucoseLogDetailsDialog key={log.id} glucoseLog={log}>
+                <GlucoseLogCard glucoseLog={log} />
+              </GlucoseLogDetailsDialog>
+            ))}
           </div>
-        ))}
-      </div>
-    </InfiniteLoadingWrapper>
+        </div>
+      ))}
+      <InfiniteLoadingTrigger
+        offset={offset}
+        onChangeOffset={setOffset}
+        totalSize={glucoseLogsByDay.length}
+        perLoad={ITEMS_PER_LOAD}
+      />
+    </div>
   );
 }
