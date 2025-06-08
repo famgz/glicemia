@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import {
-  getUniqueMealTypes,
+  getUniqueMealTypesFromDailyGrouped,
   groupGlucoseLogsByDayAndMealType,
 } from '@/utils/glucose-log';
 import { invertDateString } from '@/utils/time';
@@ -42,11 +42,14 @@ export default function GlucoseLogTable({ glucoseLogs }: Props) {
     return grouped;
   }, [glucoseLogs]);
 
-  const mealTypes = getUniqueMealTypes(glucoseLogs);
-
   const croppedItems = useMemo(
     () => glucoseLogsByDayAndMealType.slice(0, offset),
     [glucoseLogsByDayAndMealType, offset]
+  );
+
+  const mealTypes = useMemo(
+    () => getUniqueMealTypesFromDailyGrouped(croppedItems),
+    [croppedItems]
   );
 
   return (

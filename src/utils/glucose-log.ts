@@ -95,11 +95,19 @@ export function isGlucoseLogAboveMax(mealType: MealType, value: number) {
 }
 
 export function getUniqueMealTypes(glucoseLogs: GlucoseLog[]) {
-  const loggedMealTypes = Array.from(
-    new Set(glucoseLogs.map((x) => x.mealType))
-  );
+  const loggedMealTypes = new Set(glucoseLogs.map((x) => x.mealType));
   // sort by meal type order
   return Object.keys(glucoseLogMap).filter((key) =>
-    loggedMealTypes.includes(key as MealType)
+    loggedMealTypes.has(key as MealType)
+  ) as MealType[];
+}
+
+export function getUniqueMealTypesFromDailyGrouped(
+  glucoseLogs: GlucoseLogEntry[]
+) {
+  const loggedMealTypes = new Set(glucoseLogs.flatMap(Object.keys));
+  // sort by meal type order
+  return Object.keys(glucoseLogMap).filter((key) =>
+    loggedMealTypes.has(key)
   ) as MealType[];
 }
