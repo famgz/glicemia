@@ -1,6 +1,7 @@
 'use server';
 
 import { User } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 
 import { getSessionUser, getSessionUserIdElseThrow } from '@/actions/auth';
 import { db } from '@/lib/prisma';
@@ -73,6 +74,7 @@ export async function updateUserSettings({
         privateHistory,
       },
     });
+    revalidatePath('/');
     return updatedUser;
   } catch (e) {
     console.error('Failed to update user settings', e);
